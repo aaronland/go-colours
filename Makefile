@@ -18,6 +18,7 @@ build:	fmt bin
 
 deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/nfnt/resize"
+	@GOPATH=$(GOPATH) go get -u "github.com/neocortical/noborders"
 
 vendor-deps: rmdeps deps
 	if test ! -d vendor; then mkdir vendor; fi
