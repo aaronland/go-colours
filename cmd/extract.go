@@ -29,8 +29,15 @@ func main() {
 			log.Fatal(err)
 		}
 
-		c, err := extract.Extract(im)
+		clrs, err := extract.Extract(im, 5)
 
-		log.Println(c)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, c := range clrs {
+			log.Println(c.Color.Hex(), c.Percentage)
+		}
+
 	}
 }

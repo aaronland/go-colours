@@ -9,7 +9,7 @@ self:   prep rmdeps
 	mkdir -p src/github.com/aaronland/go-colours
 	cp -r closest src/github.com/aaronland/go-colours/
 	cp -r extract src/github.com/aaronland/go-colours/
-	if test -d vendor; then cp -r vendor/* src/; fi
+	cp -r vendor/* src/
 
 rmdeps:
 	if test -d src; then rm -rf src; fi 
@@ -19,6 +19,7 @@ build:	fmt bin
 deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/nfnt/resize"
 	@GOPATH=$(GOPATH) go get -u "github.com/neocortical/noborders"
+	@GOPATH=$(GOPATH) go get -u "github.com/lucasb-eyer/go-colorful"
 
 vendor-deps: rmdeps deps
 	if test ! -d vendor; then mkdir vendor; fi

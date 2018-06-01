@@ -3,22 +3,46 @@ package extract
 // this is basically a clone of go-colorweave
 
 import (
-	"github.com/aaronland/go-colours/closest"
+	"github.com/lucasb-eyer/go-colorful"
+	"github.com/neocortical/noborders"
 	"github.com/nfnt/resize"
 	"image"
-	"log"
+	_ "log"
 	"sort"
 	"sync"
-	"time"
+	_ "time"
 )
 
-func Extract(im image.Image) ([]string, error) {
+type Colour struct {
+     Color colorful.Color
+     Count int
+     Percentage float64
+}
+
+func PrepImage(im image.Image) (image.Image, error) {
 
 	im = resize.Resize(100, 0, im, resize.Bilinear)
 
+	opts := noborders.Opts()
+	opts.SetEntropy(0.05)
+	opts.SetVariance(100000)
+	opts.SetMultiPass(true)
+
+	return noborders.RemoveBorders(im, opts)
+}
+
+func Extract(im image.Image, limit int) ([]Colour, error) {
+
+	im, err := PrepImage(im)
+
+	if err != nil {
+		return nil, err
+	}
+
 	bounds := im.Bounds()
 
-	// wg := new(sync.WaitGroup)
+	pixels := bounds.Max.X * bounds.Max.Y
+
 	mu := new(sync.Mutex)
 
 	lookup := make(map[string]int)
@@ -29,17 +53,18 @@ func Extract(im image.Image) ([]string, error) {
 
 			pixel := im.At(i, j)
 			red, green, blue, _ := pixel.RGBA()
-			rgb := []int{int(red / 255), int(green / 255), int(blue / 255)}
 
-			c := closest.Closest(rgb, "foo")
+			c := colorful.Color{
+				float64(red) / 255.0,
+				float64(green) / 255.0,
+				float64(blue) / 255.0,
+			}
 
-			log.Println(i, j, c)
-
-			t1 := time.Now()
+			h := c.Hex()
 
 			mu.Lock()
 
-			count, ok := lookup[c]
+			count, ok := lookup[h]
 
 			if ok {
 				count += 1
@@ -47,37 +72,67 @@ func Extract(im image.Image) ([]string, error) {
 				count = 1
 			}
 
-			lookup[c] = count
+			lookup[h] = count
 			mu.Unlock()
-
-			t2 := time.Since(t1)
-
-			log.Println(i, j, t2)
-
 		}
 	}
 
-	keys := make([]int, 0, len(lookup))
+	reverse_lookup := reverse_map(lookup)
 
-	for _, val := range lookup {
-		keys = append(keys, val)
+	keys := make([]int, 0)
+
+	for _, count := range lookup {
+		keys = append(keys, count)
 	}
 
 	sort.Sort(sort.Reverse(sort.IntSlice(keys)))
 
-	colours := make([]string, 0)
+	colours := make([]Colour, 0)
 
-	for _, c := range reverse_map(lookup) {
-		colours = append(colours, c)
+	for _, count := range keys {
+
+		for _, hex_value := range reverse_lookup[count] {
+
+			pct := (float64(count) / float64(pixels)) * 100.0
+
+			c, _ := colorful.Hex(hex_value)
+
+			colour := Colour{
+				Color: c,
+				Count: count,
+				Percentage: pct,
+			}
+
+			colours = append(colours, colour)
+
+			if limit > 0 && len(colours) >= limit {
+				break
+			}
+		}
+
+		if limit > 0 && len(colours) >= limit {
+			break
+		}
 	}
 
 	return colours, nil
 }
 
-func reverse_map(m map[string]int) map[int]string {
-	n := make(map[int]string)
-	for k, v := range m {
-		n[v] = k
+func reverse_map(hex_map map[string]int) map[int][]string {
+
+	count_map := make(map[int][]string)
+
+	for hex_colour, count := range hex_map {
+
+		colours, ok := count_map[count]
+
+		if !ok {
+			colours = make([]string, 0)
+		}
+
+		colours = append(colours, hex_colour)
+		count_map[count] = colours
 	}
-	return n
+
+	return count_map
 }
