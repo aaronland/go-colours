@@ -35,7 +35,7 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 
 	bounds := im.Bounds()
 
-	pixels := bounds.Max.X * bounds.Max.Y
+	// pixels := bounds.Max.X * bounds.Max.Y
 
 	mu := new(sync.Mutex)
 
@@ -81,31 +81,34 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 
 	sort.Sort(sort.Reverse(sort.IntSlice(keys)))
 
-	colours := make([]colours.Colour, 0)
+	results := make([]colours.Colour, 0)
 
 	for _, count := range keys {
 
 		for _, hex_value := range reverse_lookup[count] {
 
-			pct := (float64(count) / float64(pixels)) * 100.0
+			// pct := (float64(count) / float64(pixels)) * 100.0
+			// c, _ := colorful.Hex(hex_value)
 
-			c, _ := colorful.Hex(hex_value)
+			colour, err := colours.NewHexColour(hex_value)
 
-			colour, err := colours.NewColourFromHex(c)
+			if err != nil {
+			   return nil, err
+			}
 
-			colours = append(colours, colour)
+			results = append(results, colour)
 
-			if limit > 0 && len(colours) >= limit {
+			if limit > 0 && len(results) >= limit {
 				break
 			}
 		}
 
-		if limit > 0 && len(colours) >= limit {
+		if limit > 0 && len(results) >= limit {
 			break
 		}
 	}
 
-	return colours, nil
+	return results, nil
 }
 
 func prep_image(im image.Image) (image.Image, error) {

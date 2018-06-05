@@ -2,7 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/aaronland/go-colours/extract"
+	_ "github.com/aaronland/go-colours"
+	"github.com/aaronland/go-colours/extruder"
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
@@ -14,6 +15,12 @@ import (
 func main() {
 
 	flag.Parse()
+
+	ex, err := extruder.NewNamedExtruder("vibrant")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	for _, path := range flag.Args() {
 
@@ -29,14 +36,14 @@ func main() {
 			log.Fatal(err)
 		}
 
-		clrs, err := extract.Extract(im, 5)
+		c, err := ex.Colours(im, 5)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		for _, c := range clrs {
-			log.Println(c.Color.Hex(), c.Percentage)
+		for _, c := range c {
+			log.Println(c)
 		}
 
 	}

@@ -7,6 +7,7 @@ prep:
 self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
 	mkdir -p src/github.com/aaronland/go-colours
+	cp *.go src/github.com/aaronland/go-colours/
 	cp -r grid src/github.com/aaronland/go-colours/
 	cp -r extruder src/github.com/aaronland/go-colours/
 	cp -r palette src/github.com/aaronland/go-colours/
@@ -39,5 +40,5 @@ fmt:
 
 bin: 	self
 	rm -rf bin/*
-	@GOPATH=$(GOPATH) go build -o bin/extract cmd/extract.go
+	@GOPATH=$(GOPATH) go build -o bin/inspect cmd/inspect.go
 

@@ -3,7 +3,7 @@ package extruder
 import (
 	"errors"
 	"github.com/aaronland/go-colours"
-	"string"
+	"strings"
 )
 
 func NewNamedExtruder(name string, args ...interface{}) (colours.Extruder, error) {

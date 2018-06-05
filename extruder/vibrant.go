@@ -12,13 +12,13 @@ import (
 
 type VibrantExtruder struct {
 	colours.Extruder
-	max_colors uint32
+	max_colours uint32
 }
 
 func NewVibrantExtruder(args ...interface{}) (colours.Extruder, error) {
 
 	v := VibrantExtruder{
-		max_colors: 24,
+		max_colours: 24,
 	}
 
 	return &v, nil
@@ -44,7 +44,7 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		palette.DarkMutedSwatch(),
 	}
 
-	colours := make([]colours.Colour, 0)
+	results := make([]colours.Colour, 0)
 
 	for _, sw := range swatches {
 
@@ -58,16 +58,16 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		hex := hexcolor.RGBAToHex(uint8(r>>8), uint8(g>>8), uint8(b>>8), uint8(a>>8))
 		str_hex := fmt.Sprintf("%s", hex)
 
-		c, _ := colours.NewColourFromHex(str_hex)
+		c, _ := colours.NewHexColour(str_hex)
 
-		colours = append(colours, c)
+		results = append(results, c)
 
-		if limit > 0 && len(colours) == limit {
+		if limit > 0 && len(results) == limit {
 			break
 		}
 	}
 
-	return colours, nil
+	return results, nil
 }
 
 // these are straight copies of vibrant/cli/main.go
