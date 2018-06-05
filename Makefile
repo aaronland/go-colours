@@ -7,8 +7,9 @@ prep:
 self:   prep rmdeps
 	if test -d src; then rm -rf src; fi
 	mkdir -p src/github.com/aaronland/go-colours
-	cp -r closest src/github.com/aaronland/go-colours/
-	cp -r extract src/github.com/aaronland/go-colours/
+	cp -r grid src/github.com/aaronland/go-colours/
+	cp -r extruder src/github.com/aaronland/go-colours/
+	cp -r palette src/github.com/aaronland/go-colours/
 	cp -r vendor/* src/
 
 rmdeps:
@@ -20,6 +21,8 @@ deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/nfnt/resize"
 	@GOPATH=$(GOPATH) go get -u "github.com/neocortical/noborders"
 	@GOPATH=$(GOPATH) go get -u "github.com/lucasb-eyer/go-colorful"
+	@GOPATH=$(GOPATH) go get -u "github.com/pwaller/go-hexcolor"
+	@GOPATH=$(GOPATH) go get -u "github.com/RobCherry/vibrant"
 
 vendor-deps: rmdeps deps
 	if test ! -d vendor; then mkdir vendor; fi
@@ -30,8 +33,9 @@ vendor-deps: rmdeps deps
 
 fmt:
 	go fmt cmd/*.go
-	go fmt closest/*.go
-	go fmt extract/*.go
+	go fmt grid/*.go
+	go fmt extruder/*.go
+	go fmt palette/*.go
 
 bin: 	self
 	rm -rf bin/*
