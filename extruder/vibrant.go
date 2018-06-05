@@ -1,6 +1,7 @@
 package extruder
 
 import (
+       "errors"
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
@@ -52,12 +53,14 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			continue
 		}
 
-		rgba := sw.RGBAInt()
-		r, g, b, _ := rgba.RGBA()
+		cl, ok := colorful.MakeColor(sw.Color())
 
-		cl := colorful.Color{float64(r) / 255.0, float64(g) / 255.0, float64(b) / 255.0}
+		if !ok {
+			return nil, errors.New("Unable to make color")
+		}
 
 		c, _ := colours.NewHexColour(cl.Hex())
+
 		results = append(results, c)
 
 		if limit > 0 && len(results) == limit {

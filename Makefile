@@ -41,6 +41,7 @@ fmt:
 
 bin: 	self
 	rm -rf bin/*
+	@GOPATH=$(GOPATH) go build -o bin/extrude cmd/extrude.go
 	@GOPATH=$(GOPATH) go build -o bin/inspect cmd/inspect.go
 	@GOPATH=$(GOPATH) go build -o bin/snap cmd/snap.go
 
