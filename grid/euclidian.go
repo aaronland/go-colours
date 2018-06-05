@@ -1,6 +1,7 @@
 package grid
 
 import (
+	"errors"
 	"github.com/aaronland/go-colours"
 	"github.com/pwaller/go-hexcolor"
 	"math"
@@ -49,6 +50,10 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 			log.Println(i, idx, lookup[idx])
 		}
 	*/
+
+	if len(keys) == 0 {
+		return nil, errors.New("Nothing found")
+	}
 
 	return lookup[keys[0]], nil
 }

@@ -5,9 +5,9 @@ import (
 )
 
 type Colour interface {
-     Name() string
-     Hex() string
-     Reference() string
+     Name() string	
+     Hex() string	
+     // Reference() string	
      // Closest() []Colour
 }
 

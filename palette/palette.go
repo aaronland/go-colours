@@ -4,13 +4,28 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/aaronland/go-colours"
+	_ "log"
 	"strings"
 )
 
+type CommonPaletteColour struct {
+	colours.Colour
+	CPName string `json:"name"`
+	CPHex  string `json:"hex"`
+}
+
+func (c *CommonPaletteColour) Name() string {
+	return c.CPName
+}
+
+func (c *CommonPaletteColour) Hex() string {
+	return c.CPHex
+}
+
 type CommonPalette struct {
-	colours.Palette
-	PReference string           `json:"reference"`
-	PColours   []colours.Colour `json:colours"`
+	colours.Palette `json:",omitempty"`
+	PReference      string                 `json:"reference"`
+	PColours        []*CommonPaletteColour `json:"colours,omitempty"`
 }
 
 func (p *CommonPalette) Reference() string {
@@ -18,7 +33,18 @@ func (p *CommonPalette) Reference() string {
 }
 
 func (p *CommonPalette) Colours() []colours.Colour {
-	return p.PColours
+
+	// Y DO I NEED TO DOOOOOOOOOOOOOOOOOOO THIS???
+	// Y U SO WEIRD GOOOOOOOOOOOOOOOO????
+	// (20180605/thisisaaronland)
+
+	c := make([]colours.Colour, 0)
+
+	for _, pc := range p.PColours {
+		c = append(c, pc)
+	}
+
+	return c
 }
 
 func NewNamedPalette(name string, args ...interface{}) (colours.Palette, error) {
