@@ -59,7 +59,11 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			return nil, errors.New("Unable to make color")
 		}
 
-		c, _ := colours.NewHexColour(cl.Hex())
+		c, err := colours.NewHexColour(cl.Hex())
+
+		if err != nil {
+			return nil, err
+		}
 
 		results = append(results, c)
 
