@@ -1,15 +1,19 @@
 package colours
 
 import (
+	"errors"
 	"fmt"
+	"github.com/lucasb-eyer/go-colorful"
 	"image"
+	"strings"
 )
 
 type Colour interface {
 	Name() string
 	Hex() string
-	// Reference() string
-	// Closest() []Colour
+	Reference() string
+	Closest() []Colour
+	AppendClosest(Colour) error		// I don't love this... (20180605/thisisaaronland)
 	String() string
 }
 
@@ -28,9 +32,10 @@ type Grid interface {
 
 type CommonColour struct {
 	Colour          `json:",omitempty"`
-	CommonName      string `json:"name"`
-	CommonHex       string `json:"hex"`
-	CommonReference string `json:"reference,omitempty"`
+	CommonName      string   `json:"name"`
+	CommonHex       string   `json:"hex"`
+	CommonReference string   `json:"reference"`
+	CommonClosest   []Colour `json:"closest"`
 }
 
 func (hc *CommonColour) Name() string {
@@ -45,24 +50,76 @@ func (hc *CommonColour) Reference() string {
 	return hc.CommonReference
 }
 
+func (hc *CommonColour) AppendClosest(c Colour) error {
+	hc.CommonClosest = append(hc.CommonClosest, c)
+	return nil
+}
+
 func (hc *CommonColour) String() string {
 
 	name := hc.Name()
 	hex := hc.Hex()
+	ref := hc.Reference()
 
 	if name == hex {
 		return hex
 	}
 
-	return fmt.Sprintf("%s (%s)", hex, name)
+	return fmt.Sprintf("%s (%s, %s)", hex, name, ref)
 }
 
-func NewHexColour(hex_value string) (Colour, error) {
+func NewColour(args ...interface{}) (Colour, error) {
+
+	hex := "###"
+	name := "unknown"
+	ref := "unknown"
+
+	closest := make([]Colour, 0)
+
+	var err error
+
+	switch len(args) {
+
+	case 0:
+		err = errors.New("Insuffient arguments")
+	case 1:
+		hex = args[0].(string)
+	case 2:
+		hex = args[0].(string)
+		name = args[1].(string)
+	case 3:
+		hex = args[0].(string)
+		name = args[1].(string)
+		ref = args[2].(string)
+	default:
+		hex = args[0].(string)
+		name = args[1].(string)
+		ref = args[2].(string)
+
+		for i, c := range args[3:] {
+			closest[i] = c.(Colour)
+		}
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !strings.HasPrefix(hex, "#") {
+		hex = fmt.Sprintf("#%s", hex)
+	}
+
+	_, err = colorful.Hex(hex)
+
+	if err != nil {
+		return nil, err
+	}
 
 	hc := CommonColour{
-		CommonName:      hex_value,
-		CommonHex:       hex_value,
-		CommonReference: "unknown",
+		CommonName:      name,
+		CommonHex:       hex,
+		CommonReference: ref,
+		CommonClosest:   closest,
 	}
 
 	return &hc, nil

@@ -59,5 +59,7 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 		return nil, errors.New("Nothing found")
 	}
 
-	return lookup[keys[0]], nil
+	match := lookup[keys[0]]
+
+	return colours.NewColour(match.Hex(), match.Name(), palette.Reference())
 }

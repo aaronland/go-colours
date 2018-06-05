@@ -26,7 +26,7 @@ func main() {
 
 	for _, hex := range flag.Args() {
 
-		target, err := colours.NewHexColour(hex)
+		target, err := colours.NewColour(hex)
 
 		if err != nil {
 			log.Fatal(err)

@@ -1,7 +1,7 @@
 package extruder
 
 import (
-       "errors"
+	"errors"
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
@@ -59,7 +59,9 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			return nil, errors.New("Unable to make color")
 		}
 
-		c, err := colours.NewHexColour(cl.Hex())
+		hex := cl.Hex()
+
+		c, err := colours.NewColour(hex, hex, "vibrant")
 
 		if err != nil {
 			return nil, err

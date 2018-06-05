@@ -88,7 +88,7 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			// pct := (float64(count) / float64(pixels)) * 100.0
 			// c, _ := colorful.Hex(hex_value)
 
-			colour, err := colours.NewHexColour(hex_value)
+			colour, err := colours.NewColour(hex_value)
 
 			if err != nil {
 				return nil, err
