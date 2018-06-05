@@ -93,7 +93,7 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			colour, err := colours.NewHexColour(hex_value)
 
 			if err != nil {
-			   return nil, err
+				return nil, err
 			}
 
 			results = append(results, colour)

@@ -11,9 +11,9 @@ type EuclidianGrid struct {
 	colours.Grid
 }
 
-func NewEuclidianGrid(args ...interface{}) (Grid, error) {
+func NewEuclidianGrid(args ...interface{}) (colours.Grid, error) {
 
-	eu := EucildianGrid{}
+	eu := EuclidianGrid{}
 
 	return &eu, nil
 }
@@ -23,14 +23,14 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 	// https://github.com/pwaller/go-hexcolor/blob/master/hexcolor.go
 	// https://github.com/ubernostrum/webcolors/blob/master/webcolors.py#L473-L485
 
-	r, g, b, _ := hexcolor.HexToRGBA(hexcolor.Hex(target.Hex))
+	r, g, b, _ := hexcolor.HexToRGBA(hexcolor.Hex(target.Hex()))
 
 	lookup := make(map[int]colours.Colour)
 	keys := make([]int, 0)
 
-	for _, c := range palette.Colours {
+	for _, c := range palette.Colours() {
 
-		rc, gc, bc, _ := hexcolor.HexToRGBA(hexcolor.Hex(c.Hex))
+		rc, gc, bc, _ := hexcolor.HexToRGBA(hexcolor.Hex(c.Hex()))
 
 		rd := math.Pow(float64(int32(rc)-int32(r)), 2.0)
 		gd := math.Pow(float64(int32(gc)-int32(g)), 2.0)
@@ -50,5 +50,5 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 		}
 	*/
 
-	return lookup[keys[0]]
+	return lookup[keys[0]], nil
 }
