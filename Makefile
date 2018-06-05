@@ -22,7 +22,7 @@ deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/nfnt/resize"
 	@GOPATH=$(GOPATH) go get -u "github.com/neocortical/noborders"
 	@GOPATH=$(GOPATH) go get -u "github.com/lucasb-eyer/go-colorful"
-	@GOPATH=$(GOPATH) go get -u "github.com/pwaller/go-hexcolor"
+	# @GOPATH=$(GOPATH) go get -u "github.com/pwaller/go-hexcolor"
 	@GOPATH=$(GOPATH) go get -u "github.com/RobCherry/vibrant"
 
 vendor-deps: rmdeps deps
@@ -42,4 +42,5 @@ fmt:
 bin: 	self
 	rm -rf bin/*
 	@GOPATH=$(GOPATH) go build -o bin/inspect cmd/inspect.go
+	@GOPATH=$(GOPATH) go build -o bin/snap cmd/snap.go
 
