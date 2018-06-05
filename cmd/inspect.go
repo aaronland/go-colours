@@ -50,6 +50,8 @@ func main() {
 			log.Fatal(err)
 		}
 
+		log.Println(path)
+
 		c, err := ex.Colours(im, 5)
 
 		if err != nil {

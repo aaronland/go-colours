@@ -5,8 +5,6 @@ package extruder
 import (
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
-	"github.com/neocortical/noborders"
-	"github.com/nfnt/resize"
 	"image"
 	_ "log"
 	"sort"
@@ -27,7 +25,7 @@ func NewSimpleExtruder(args ...interface{}) (colours.Extruder, error) {
 
 func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, error) {
 
-	im, err := prep_image(im)
+	im, err := PrepareImage(im)
 
 	if err != nil {
 		return nil, err
@@ -109,18 +107,6 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 	}
 
 	return results, nil
-}
-
-func prep_image(im image.Image) (image.Image, error) {
-
-	im = resize.Resize(100, 0, im, resize.Bilinear)
-
-	opts := noborders.Opts()
-	opts.SetEntropy(0.05)
-	opts.SetVariance(100000)
-	opts.SetMultiPass(true)
-
-	return noborders.RemoveBorders(im, opts)
 }
 
 func reverse_map(hex_map map[string]int) map[int][]string {

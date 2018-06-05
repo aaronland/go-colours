@@ -33,6 +33,7 @@ vendor-deps: rmdeps deps
 	rm -rf src
 
 fmt:
+	go fmt *.go
 	go fmt cmd/*.go
 	go fmt grid/*.go
 	go fmt extruder/*.go

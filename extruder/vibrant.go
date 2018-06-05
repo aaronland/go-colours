@@ -1,12 +1,12 @@
 package extruder
 
 import (
-	"fmt"
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
-	"github.com/pwaller/go-hexcolor"
+	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
 	"image"
+	_ "log"
 	_ "sort"
 )
 
@@ -53,13 +53,11 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		}
 
 		rgba := sw.RGBAInt()
-		r, g, b, a := rgba.RGBA()
+		r, g, b, _ := rgba.RGBA()
 
-		hex := hexcolor.RGBAToHex(uint8(r>>8), uint8(g>>8), uint8(b>>8), uint8(a>>8))
-		str_hex := fmt.Sprintf("%s", hex)
+		cl := colorful.Color{float64(r) / 255.0, float64(g) / 255.0, float64(b) / 255.0}
 
-		c, _ := colours.NewHexColour(str_hex)
-
+		c, _ := colours.NewHexColour(cl.Hex())
 		results = append(results, c)
 
 		if limit > 0 && len(results) == limit {
