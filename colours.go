@@ -1,6 +1,7 @@
 package colours
 
 import (
+       "fmt"
        "image"
 )
 
@@ -9,6 +10,7 @@ type Colour interface {
      Hex() string	
      // Reference() string	
      // Closest() []Colour
+     String() string
 }
 
 type Palette interface {
@@ -24,32 +26,70 @@ type Grid interface {
      Closest(Colour, Palette) (Colour, error)
 }
 
-type HexColour struct {
-     Colour
-     HexName string
-     HexColour string
-     HexReference string
+type CommonColour struct {
+     Colour		`json:",omitempty"`
+     CommonName string	`json:"name"`     
+     CommonHex string	`json:"hex"`
+     CommonReference string	`json:"reference,omitempty"`
 }
 
-func (hc *HexColour) Name() string {
-     return hc.HexName
+func (hc *CommonColour) Name() string {
+     return hc.CommonName
 }
 
-func (hc *HexColour) Hex() string {
-     return hc.HexColour
+func (hc *CommonColour) Hex() string {
+     return hc.CommonHex
 }
 
-func (hc *HexColour) Reference() string {
-     return hc.HexReference
+func (hc *CommonColour) Reference() string {
+     return hc.CommonReference
+}
+
+func (hc *CommonColour) String() string {
+
+     name := hc.Name()
+     hex := hc.Hex()
+
+     if name == hex {
+     	return hex
+     }
+
+     return fmt.Sprintf("%s (%s)", hex, name)
 }
 
 func NewHexColour(hex_value string) (Colour, error){
 
-     hc := HexColour{
-     	HexName: hex_value,
-	HexColour: hex_value,
-	HexReference: "unknown",
+     hc := CommonColour{
+     	CommonName: hex_value,
+	CommonHex: hex_value,
+	CommonReference: "unknown",
      }
 
      return &hc, nil
 }
+
+type CommonPalette struct {
+	Palette `json:",omitempty"`
+	CommonReference      string               `json:"reference"`
+	CommonColours        []*CommonColour `json:"colours,omitempty"`
+}
+
+func (p *CommonPalette) Reference() string {
+	return p.CommonReference
+}
+
+func (p *CommonPalette) Colours() []Colour {
+
+	// Y DO I NEED TO DOOOOOOOOOOOOOOOOOOO THIS???
+	// Y U SO WEIRD GOOOOOOOOOOOOOOOO????
+	// (20180605/thisisaaronland)
+
+	c := make([]Colour, 0)
+
+	for _, pc := range p.CommonColours {
+		c = append(c, pc)
+	}
+
+	return c
+}
+
