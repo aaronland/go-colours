@@ -13,7 +13,7 @@ type Colour interface {
 	Hex() string
 	Reference() string
 	Closest() []Colour
-	AppendClosest(Colour) error		// I don't love this... (20180605/thisisaaronland)
+	AppendClosest(Colour) error // I don't love this... (20180605/thisisaaronland)
 	String() string
 }
 
@@ -32,10 +32,10 @@ type Grid interface {
 
 type CommonColour struct {
 	Colour          `json:",omitempty"`
-	CommonName      string   `json:"name"`
+	CommonName      string   `json:"name,omitempty"`
 	CommonHex       string   `json:"hex"`
-	CommonReference string   `json:"reference"`
-	CommonClosest   []Colour `json:"closest"`
+	CommonReference string   `json:"reference,omitempty"`
+	CommonClosest   []Colour `json:"closest,omitempty"`
 }
 
 func (hc *CommonColour) Name() string {
@@ -51,6 +51,11 @@ func (hc *CommonColour) Reference() string {
 }
 
 func (hc *CommonColour) AppendClosest(c Colour) error {
+
+	if hc.CommonClosest == nil {
+		hc.CommonClosest = make([]Colour, 0)
+	}
+
 	hc.CommonClosest = append(hc.CommonClosest, c)
 	return nil
 }
@@ -74,7 +79,7 @@ func NewColour(args ...interface{}) (Colour, error) {
 	name := "unknown"
 	ref := "unknown"
 
-	closest := make([]Colour, 0)
+	var closest []Colour
 
 	var err error
 
@@ -95,6 +100,8 @@ func NewColour(args ...interface{}) (Colour, error) {
 		hex = args[0].(string)
 		name = args[1].(string)
 		ref = args[2].(string)
+
+		closest = make([]Colour, 0)
 
 		for i, c := range args[3:] {
 			closest[i] = c.(Colour)
