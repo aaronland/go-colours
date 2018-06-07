@@ -70,6 +70,7 @@ _Note that error handling has been removed for the sake of brevity._
 
 ### Colour
 
+```
 type Colour interface {
 	Name() string
 	Hex() string
@@ -78,25 +79,32 @@ type Colour interface {
 	AppendClosest(Colour) error // I don't love this... (20180605/thisisaaronland)
 	String() string
 }
+```
 
 ### Extruder
 
+```
 type Extruder interface {
 	Colours(image.Image, int) ([]Colour, error)
 }
+```
 
 ### Grid
 
+```
 type Grid interface {
 	Closest(Colour, Palette) (Colour, error)
 }
+```
 
 ### Palette
 
+```
 type Palette interface {
 	Reference() string
 	Colours() []Colour
 }
+```
 
 ## Extruders
 
