@@ -132,8 +132,8 @@ Palettes are a fixed set of colours.
 
 ## See also
 
-* github.com/RobCherry/vibrant
-* github.com/lucasb-eyer/go-colorful
+* https://github.com/RobCherry/vibrant
+* https://github.com/lucasb-eyer/go-colorful
 
 * https://github.com/aaronland/py-cooperhewitt-swatchbook
 * https://github.com/aaronland/py-cooperhewitt-roboteyes-colors
