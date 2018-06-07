@@ -47,17 +47,17 @@ func main() {
 	for _, path := range flag.Args() {
 
 		fh, _ := os.Open(path)
-
 		im, _, _ := image.Decode(fh)
 
-		c, _ := ex.Colours(im, 5)
+		colours, _ := ex.Colours(im, 5)
 
-		for _, c := range c {
+		for _, c := range colours {
 
-			cl, _ := gr.Closest(c, p)
+			closest, _ := gr.Closest(c, p)
 
-			log.Println(c)
-			log.Println(cl)
+			for _, cl := range closest {
+				log.Println(c, cl)
+			}
 		}
 
 	}
@@ -103,6 +103,8 @@ type Palette interface {
 Extruders are the things that generate a palette of colours for an `image.Image`.
 
 ### vibrant
+
+This returns colours using the [vibrant](github.com/RobCherry/vibrant) package but rather than ranking colours using a particular metric it returns specific named "swatches" that are recast as `colours.Colour` interfaces. They are: `VibrantSwatch, LightVibrantSwatch, DarkVibrantSwatch, MutedSwatch, LightMutedSwatch, DarkMutedSwatch`.
 
 ### Grids
 
