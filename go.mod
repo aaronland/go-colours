@@ -14,5 +14,5 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.0.2
 	github.com/neocortical/noborders v0.0.0-20180212065722-427885311d44
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
-	golang.org/x/image v0.5.0
+	golang.org/x/image v0.10.0
 )
