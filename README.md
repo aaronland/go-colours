@@ -25,13 +25,14 @@ package main
 
 import (
 	"flag"
-	"github.com/aaronland/go-colours/extruder"
-	"github.com/aaronland/go-colours/grid"
-	"github.com/aaronland/go-colours/palette"
 	"image"
 	_ "image/jpeg"
 	"log"
 	"os"
+
+	"github.com/aaronland/go-colours/extruder"
+	"github.com/aaronland/go-colours/grid"
+	"github.com/aaronland/go-colours/palette"
 )
 
 func main() {
