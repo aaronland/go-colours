@@ -22,7 +22,7 @@ func main() {
 	var grid_uri string
 	var palette_uri string
 
-	flag.StringVar(&extruder_uri, "extruder-uri", "virbant://", "...")
+	flag.StringVar(&extruder_uri, "extruder-uri", "vibrant://", "...")
 	flag.StringVar(&grid_uri, "grid-uri", "euclidian://", "...")
 	flag.StringVar(&palette_uri, "palette-uri", "css3://", "...")
 

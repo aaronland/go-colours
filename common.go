@@ -17,7 +17,7 @@ type CommonColour struct {
 	CommonClosest   []Colour `json:"closest,omitempty"`
 }
 
-func init(){
+func init() {
 	ctx := context.Background()
 	err := RegisterColour(ctx, "common", NewCommonColour)
 	if err != nil {
@@ -36,7 +36,7 @@ func NewCommonColour(ctx context.Context, uri string) (Colour, error) {
 	u, err := url.Parse(uri)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to parse URI, %w", err)
 	}
 
 	q := u.Query()
@@ -69,7 +69,7 @@ func NewCommonColour(ctx context.Context, uri string) (Colour, error) {
 	_, err = colorful.Hex(hex)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to derive hex (%s), %w", hex, err)
 	}
 
 	hc := CommonColour{

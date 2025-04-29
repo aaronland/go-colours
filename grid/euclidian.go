@@ -2,9 +2,7 @@ package grid
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	_ "log"
 	"math"
 	"sort"
 
@@ -17,7 +15,15 @@ type EuclidianGrid struct {
 	Grid
 }
 
-func NewEuclidianGrid(args ...interface{}) (Grid, error) {
+func init() {
+	ctx := context.Background()
+	err := RegisterGrid(ctx, "euclidian", NewEuclidianGrid)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewEuclidianGrid(ctx context.Context, uri string) (Grid, error) {
 	eu := EuclidianGrid{}
 	return &eu, nil
 }
@@ -61,7 +67,7 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, plt palette.Palette) (co
 	sort.Ints(keys)
 
 	if len(keys) == 0 {
-		return nil, errors.New("Nothing found")
+		return nil, fmt.Errorf("Nothing found")
 	}
 
 	match := lookup[keys[0]]

@@ -2,9 +2,9 @@ package extruder
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"image"
+	"strings"
 
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
@@ -65,10 +65,11 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		cl, ok := colorful.MakeColor(sw.Color())
 
 		if !ok {
-			return nil, errors.New("Unable to make color")
+			return nil, fmt.Errorf("Unable to make color, %v", sw.Color())
 		}
 
 		hex := cl.Hex()
+		hex = strings.TrimLeft(hex, "#")
 
 		ctx := context.Background()
 
@@ -76,7 +77,7 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		c, err := colours.NewColour(ctx, c_uri)
 
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Failed to create new color '%s', %w", c_uri, err)
 		}
 
 		results = append(results, c)
