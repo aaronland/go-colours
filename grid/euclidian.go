@@ -2,23 +2,25 @@ package grid
 
 import (
 	"errors"
-	"github.com/aaronland/go-colours"
-	"github.com/lucasb-eyer/go-colorful"
 	_ "log"
 	"math"
 	"sort"
+
+	"github.com/aaronland/go-colours"
+	"github.com/aaronland/go-colours/palette"
+	"github.com/lucasb-eyer/go-colorful"
 )
 
 type EuclidianGrid struct {
-	colours.Grid
+	Grid
 }
 
-func NewEuclidianGrid(args ...interface{}) (colours.Grid, error) {
+func NewEuclidianGrid(args ...interface{}) (Grid, error) {
 	eu := EuclidianGrid{}
 	return &eu, nil
 }
 
-func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette) (colours.Colour, error) {
+func (eu *EuclidianGrid) Closest(target colours.Colour, plt palette.Palette) (colours.Colour, error) {
 
 	// http://stackoverflow.com/questions/9694165/convert-rgb-color-to-english-color-name-like-green
 	// https://github.com/ubernostrum/webcolors/blob/master/webcolors.py#L473-L485
@@ -34,7 +36,7 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 	lookup := make(map[int]colours.Colour)
 	keys := make([]int, 0)
 
-	for _, candidate := range palette.Colours() {
+	for _, candidate := range plt.Colours() {
 
 		cl, err := colorful.Hex(candidate.Hex())
 
@@ -62,5 +64,5 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, palette colours.Palette)
 
 	match := lookup[keys[0]]
 
-	return colours.NewColour(match.Hex(), match.Name(), palette.Reference())
+	return colours.NewColour(match.Hex(), match.Name(), plt.Reference())
 }

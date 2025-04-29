@@ -17,15 +17,6 @@ type Colour interface {
 	String() string
 }
 
-type Palette interface {
-	Reference() string
-	Colours() []Colour
-}
-
-type Grid interface {
-	Closest(Colour, Palette) (Colour, error)
-}
-
 type CommonColour struct {
 	Colour          `json:",omitempty"`
 	CommonName      string   `json:"name,omitempty"`
@@ -126,29 +117,4 @@ func NewColour(args ...interface{}) (Colour, error) {
 	}
 
 	return &hc, nil
-}
-
-type CommonPalette struct {
-	Palette         `json:",omitempty"`
-	CommonReference string          `json:"reference"`
-	CommonColours   []*CommonColour `json:"colours,omitempty"`
-}
-
-func (p *CommonPalette) Reference() string {
-	return p.CommonReference
-}
-
-func (p *CommonPalette) Colours() []Colour {
-
-	// Y DO I NEED TO DOOOOOOOOOOOOOOOOOOO THIS???
-	// Y U SO WEIRD GOOOOOOOOOOOOOOOO????
-	// (20180605/thisisaaronland)
-
-	c := make([]Colour, 0)
-
-	for _, pc := range p.CommonColours {
-		c = append(c, pc)
-	}
-
-	return c
 }

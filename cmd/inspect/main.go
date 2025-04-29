@@ -19,8 +19,12 @@ import (
 func main() {
 
 	var extruder_uri string
+	var grid_uri string
+	var palette_uri string
 
 	flag.StringVar(&extruder_uri, "extruder-uri", "virbant://", "...")
+	flag.StringVar(&grid_uri, "grid-uri", "euclidian://", "...")
+	flag.StringVar(&palette_uri, "palette-uri", "css3://", "...")
 
 	flag.Parse()
 
@@ -32,13 +36,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	gr, err := grid.NewNamedGrid("euclidian")
+	gr, err := grid.NewGrid(ctx, grid_uri)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	p, err := palette.NewNamedPalette("css4")
+	p, err := palette.NewPalette(ctx, palette_uri)
 
 	if err != nil {
 		log.Fatal(err)
