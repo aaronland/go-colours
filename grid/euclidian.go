@@ -1,7 +1,9 @@
 package grid
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	_ "log"
 	"math"
 	"sort"
@@ -64,5 +66,9 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, plt palette.Palette) (co
 
 	match := lookup[keys[0]]
 
-	return colours.NewColour(match.Hex(), match.Name(), plt.Reference())
+	ctx := context.Background()
+
+	c_uri := fmt.Sprintf("common://?hex=%s&name=%s&ref=%s", match.Hex(), match.Name(), plt.Reference())
+
+	return colours.NewColour(ctx, c_uri)
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 
 	"github.com/aaronland/go-colours"
@@ -36,7 +37,9 @@ func main() {
 
 	for _, hex := range flag.Args() {
 
-		target, err := colours.NewColour(hex)
+		c_uri := fmt.Sprintf("common://?hex=%s", hex)
+
+		target, err := colours.NewColour(ctx, c_uri)
 
 		if err != nil {
 			log.Fatal(err)

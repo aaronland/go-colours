@@ -4,6 +4,7 @@ package extruder
 
 import (
 	"context"
+	"fmt"
 	"image"
 	"sort"
 	"sync"
@@ -96,7 +97,11 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 			// pct := (float64(count) / float64(pixels)) * 100.0
 			// c, _ := colorful.Hex(hex_value)
 
-			colour, err := colours.NewColour(hex_value)
+			ctx := context.Background()
+
+			c_uri := fmt.Sprintf("common://?hex=%s", hex_value)
+
+			colour, err := colours.NewColour(ctx, c_uri)
 
 			if err != nil {
 				return nil, err

@@ -3,6 +3,7 @@ package extruder
 import (
 	"context"
 	"errors"
+	"fmt"
 	"image"
 
 	"github.com/RobCherry/vibrant"
@@ -69,7 +70,10 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 
 		hex := cl.Hex()
 
-		c, err := colours.NewColour(hex, hex, "vibrant")
+		ctx := context.Background()
+
+		c_uri := fmt.Sprintf("common://?hex=%s&name=%s&ref=vibrant", hex, hex)
+		c, err := colours.NewColour(ctx, c_uri)
 
 		if err != nil {
 			return nil, err
