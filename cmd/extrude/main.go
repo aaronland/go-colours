@@ -1,21 +1,29 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"github.com/aaronland/go-colours/extruder"
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 	"log"
 	"os"
+
+	"github.com/aaronland/go-colours/extruder"
 )
 
 func main() {
 
+	var extruder_uri string
+
+	flag.StringVar(&extruder_uri, "extruder-uri", "virbant://", "...")
+
 	flag.Parse()
 
-	ex, err := extruder.NewNamedExtruder("vibrant")
+	ctx := context.Background()
+
+	ex, err := extruder.NewExtruder(ctx, extruder_uri)
 
 	if err != nil {
 		log.Fatal(err)

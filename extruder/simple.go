@@ -3,20 +3,28 @@ package extruder
 // this is basically a clone of go-colorweave
 
 import (
-	"github.com/aaronland/go-colours"
-	"github.com/lucasb-eyer/go-colorful"
+	"context"
 	"image"
-	_ "log"
 	"sort"
 	"sync"
-	_ "time"
+
+	"github.com/aaronland/go-colours"
+	"github.com/lucasb-eyer/go-colorful"
 )
 
 type SimpleExtruder struct {
-	colours.Extruder
+	Extruder
 }
 
-func NewSimpleExtruder(args ...interface{}) (colours.Extruder, error) {
+func init() {
+	ctx := context.Background()
+	err := RegisterExtruder(ctx, "simple", NewSimpleExtruder)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewSimpleExtruder(ctx context.Context, uri string) (Extruder, error) {
 
 	ex := SimpleExtruder{}
 

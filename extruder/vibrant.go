@@ -1,22 +1,30 @@
 package extruder
 
 import (
+	"context"
 	"errors"
+	"image"
+
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
-	"image"
-	_ "log"
-	_ "sort"
 )
 
 type VibrantExtruder struct {
-	colours.Extruder
+	Extruder
 	max_colours uint32
 }
 
-func NewVibrantExtruder(args ...interface{}) (colours.Extruder, error) {
+func init() {
+	ctx := context.Background()
+	err := RegisterExtruder(ctx, "vibrant", NewVibrantExtruder)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewVibrantExtruder(ctx context.Context, uri string) (Extruder, error) {
 
 	v := VibrantExtruder{
 		max_colours: 24,

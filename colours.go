@@ -3,9 +3,9 @@ package colours
 import (
 	"errors"
 	"fmt"
-	"github.com/lucasb-eyer/go-colorful"
-	"image"
 	"strings"
+
+	"github.com/lucasb-eyer/go-colorful"
 )
 
 type Colour interface {
@@ -20,10 +20,6 @@ type Colour interface {
 type Palette interface {
 	Reference() string
 	Colours() []Colour
-}
-
-type Extruder interface {
-	Colours(image.Image, int) ([]Colour, error)
 }
 
 type Grid interface {
