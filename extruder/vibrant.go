@@ -34,6 +34,10 @@ func NewVibrantExtruder(ctx context.Context, uri string) (Extruder, error) {
 	return &v, nil
 }
 
+func (ex *VibrantExtruder) Name() string {
+	return "vibrant"
+}
+
 func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, error) {
 
 	pb := vibrant.NewPaletteBuilder(im)

@@ -14,6 +14,7 @@ import (
 
 type Extruder interface {
 	Colours(image.Image, int) ([]colours.Colour, error)
+	Name() string
 }
 
 var extruder_roster roster.Roster

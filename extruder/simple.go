@@ -33,6 +33,10 @@ func NewSimpleExtruder(ctx context.Context, uri string) (Extruder, error) {
 	return &ex, nil
 }
 
+func (ex *SimpleExtruder) Name() string {
+	return "simple"
+}
+
 func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, error) {
 
 	im, err := PrepareImage(im)

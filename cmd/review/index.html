@@ -5,35 +5,40 @@
     <body>
 	
 {{ range $i, $im :=  .Images -}}
-<div style="border:solid thin; width:480px; float:left;margin:.5rem;padding:.5rem;">
+<div style="border:solid thin; width:600px; float:left;margin:.5rem;padding:.5rem;">
 
-    <div style="height:500px;">
+    <div style="height:650px;">
 	<div style="display:flex; justify-content: center;">
-	    <img src="{{ $im.URI }}" style="max-height:480px; max-width:480px;" />
+	    <img src="{{ $im.URI }}" style="max-height:600px; max-width:600px;" />
 	</div>
     </div>
-    
+
+    {{ range $_, $ex := $im.Extrusions -}}
+    <div style="float:left; border:solid thin; padding:.5rem;margin:.5rem;">
+	<h3>{{ $ex.Extruder }}</h3>
 <table>
     <tr>
-	<th>Vibrant</th>
-	<th>CSS3</th>	
-	<th>CSS4</th>
-	<th>Crayola</th>
+	<th>&#160;</th>
+	{{ range $_, $p := $ex.Palettes -}}
+	<th>{{ $p }}</th>	
+	{{ end -}}
     </tr>
     
-    {{ range $j, $sw := $im.Swatches -}}
+    {{ range $j, $sw := $ex.Swatches -}}
     <tr>
 	<td>
-	    <div style="width:25px; height: 25px; background-color: {{$sw.Colour.Hex }};">&#160;</div>
+	    <div style="width:50px; height: 25px; background-color: {{$sw.Colour.Hex }};">&#160;</div>
 	</td>
 	{{ range $k, $o := $sw.Closest -}}
 	<td>
-	    <div style="width:25px; height: 25px; background-color: {{$o.Colour.Hex }};">&#160;</div>
+	    <div style="width:50px; height: 25px; background-color: {{$o.Colour.Hex }};">&#160;</div>
 	</td>
 	{{ end -}}
     </tr>
     {{ end -}}
 </table>
+</div>
+{{ end -}}
 
 </div>
 {{ end -}}

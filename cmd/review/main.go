@@ -5,7 +5,6 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"github.com/sfomuseum/go-www-show"
 	"html/template"
 	"image"
 	_ "image/gif"
@@ -22,6 +21,8 @@ import (
 	"github.com/aaronland/go-colours/extruder"
 	"github.com/aaronland/go-colours/grid"
 	"github.com/aaronland/go-colours/palette"
+	"github.com/sfomuseum/go-flags/multi"
+	"github.com/sfomuseum/go-www-show"
 )
 
 //go:embed index.html
@@ -37,9 +38,15 @@ type Swatch struct {
 	Closest []*Closest
 }
 
-type Image struct {
-	URI      string
+type Extrusion struct {
+	Extruder string
+	Palettes []string
 	Swatches []*Swatch
+}
+
+type Image struct {
+	URI        string
+	Extrusions []*Extrusion
 }
 
 type TemplateVars struct {
@@ -49,11 +56,13 @@ type TemplateVars struct {
 
 func main() {
 
-	var extruder_uri string
+	var extruder_uris multi.MultiString
+	var palette_uris multi.MultiString
 
 	var root string
 
-	flag.StringVar(&extruder_uri, "extruder-uri", "vibrant://", "...")
+	flag.Var(&extruder_uris, "extruder-uri", "Zero or more aaronland/go-colours/extruder.Extruder URIs. Default is to use simple:// and vibrant://")
+	flag.Var(&palette_uris, "palette-uri", "Zero or more aaronland/go-colours/palette.Palette URIs. Default is to use css3://, css4:// and crayola://")
 	flag.StringVar(&root, "root", "", "If empty a new temporary directory will be created.")
 
 	flag.Parse()
@@ -84,10 +93,28 @@ func main() {
 		abs_root = root_dir
 	}
 
-	ex, err := extruder.NewExtruder(ctx, extruder_uri)
+	if len(extruder_uris) == 0 {
+		extruder_uris.Set("simple://")
+		extruder_uris.Set("vibrant://")
+	}
 
-	if err != nil {
-		log.Fatalf("Failed to create new extruder, %v", err)
+	if len(palette_uris) == 0 {
+		palette_uris.Set("css3://")
+		palette_uris.Set("css4://")
+		palette_uris.Set("crayola://")
+	}
+
+	extruders := make([]extruder.Extruder, len(extruder_uris))
+
+	for idx, ex_uri := range extruder_uris {
+
+		ex, err := extruder.NewExtruder(ctx, ex_uri)
+
+		if err != nil {
+			log.Fatalf("Failed to create new '%s' extruder, %v", ex_uri, err)
+		}
+
+		extruders[idx] = ex
 	}
 
 	gr, err := grid.NewGrid(ctx, "euclidian://")
@@ -96,28 +123,17 @@ func main() {
 		log.Fatalf("Failed to create new grid, %v", err)
 	}
 
-	css4, err := palette.NewPalette(ctx, "css4://")
+	palettes := make([]palette.Palette, len(palette_uris))
 
-	if err != nil {
-		log.Fatalf("Failed to create CSS4 palette, %v", err)
-	}
+	for idx, p_uri := range palette_uris {
 
-	css3, err := palette.NewPalette(ctx, "css3://")
+		p, err := palette.NewPalette(ctx, p_uri)
 
-	if err != nil {
-		log.Fatalf("Failed to create CSS3 palette, %v", err)
-	}
+		if err != nil {
+			log.Fatalf("Failed to create '%s' palette, %v", p_uri, err)
+		}
 
-	crayola, err := palette.NewPalette(ctx, "crayola://")
-
-	if err != nil {
-		log.Fatalf("Failed to create Crayola palette, %v", err)
-	}
-
-	palettes := map[string]palette.Palette{
-		"css3":    css3,
-		"css4":    css4,
-		"crayola": crayola,
+		palettes[idx] = p
 	}
 
 	index_t, err := template.New("index").Parse(index_html)
@@ -126,45 +142,64 @@ func main() {
 		log.Fatalf("Failed to parse template, %v", err)
 	}
 
-	derive_colours := func(im image.Image) ([]*Swatch, error) {
+	derive_colours := func(im image.Image) ([]*Extrusion, error) {
 
-		swatches := make([]*Swatch, 0)
+		extrusions := make([]*Extrusion, 0)
 
-		colours, err := ex.Colours(im, 5)
+		for _, ex := range extruders {
 
-		if err != nil {
-			return nil, fmt.Errorf("Failed to derive colours for image, %w", err)
-		}
+			swatches := make([]*Swatch, 0)
 
-		for _, c := range colours {
+			colours, err := ex.Colours(im, 5)
 
-			closest := make([]*Closest, 0)
-
-			for label, p := range palettes {
-
-				c2, err := gr.Closest(c, p)
-
-				if err != nil {
-					return nil, fmt.Errorf("Failed to derive closest, %w", err)
-				}
-
-				cl := &Closest{
-					Palette: label,
-					Colour:  c2,
-				}
-
-				closest = append(closest, cl)
+			if err != nil {
+				return nil, fmt.Errorf("Failed to derive colours for image, %w", err)
 			}
 
-			sw := &Swatch{
-				Colour:  c,
-				Closest: closest,
+			for _, c := range colours {
+
+				closest := make([]*Closest, 0)
+
+				for _, p := range palettes {
+
+					c2, err := gr.Closest(c, p)
+
+					if err != nil {
+						return nil, fmt.Errorf("Failed to derive closest, %w", err)
+					}
+
+					cl := &Closest{
+						Palette: p.Reference(),
+						Colour:  c2,
+					}
+
+					closest = append(closest, cl)
+				}
+
+				sw := &Swatch{
+					Colour:  c,
+					Closest: closest,
+				}
+
+				swatches = append(swatches, sw)
 			}
 
-			swatches = append(swatches, sw)
+			palette_labels := make([]string, 0)
+
+			for _, p := range palettes {
+				palette_labels = append(palette_labels, p.Reference())
+			}
+
+			e := &Extrusion{
+				Extruder: ex.Name(),
+				Palettes: palette_labels,
+				Swatches: swatches,
+			}
+
+			extrusions = append(extrusions, e)
 		}
 
-		return swatches, nil
+		return extrusions, nil
 	}
 
 	images := make([]*Image, 0)
@@ -223,15 +258,15 @@ func main() {
 			log.Fatalf("Failed to decode %s, %v", path, err)
 		}
 
-		swatches, err := derive_colours(im)
+		extrusions, err := derive_colours(im)
 
 		if err != nil {
 			log.Fatalf("Failed to derive colours, %v", err)
 		}
 
 		im_c := &Image{
-			URI:      fname,
-			Swatches: swatches,
+			URI:        fname,
+			Extrusions: extrusions,
 		}
 
 		images = append(images, im_c)
@@ -270,8 +305,8 @@ func main() {
 
 	str_palettes := make([]string, 0)
 
-	for label, _ := range palettes {
-		str_palettes = append(str_palettes, label)
+	for _, p := range palettes {
+		str_palettes = append(str_palettes, p.Reference())
 	}
 
 	vars := TemplateVars{
