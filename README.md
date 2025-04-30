@@ -2,21 +2,13 @@
 
 Go package for working with colours, principally colour extraction and "snap to grid"
 
-## Install
-
-You will need to have both `Go` (specifically [version 1.12](https://golang.org/dl/) or higher because we're using [Go modules](https://github.com/golang/go/wiki/Modules)) and the `make` programs installed on your computer. Assuming you do just type:
-
-```
-make tools
-```
-
-All of this package's dependencies are bundled with the code in the `vendor` directory.
-
 ## Important
 
-This is work in progress. Eventually it will be a complete port of the [py-cooperhewitt-swatchbook](https://github.com/aaronland/py-cooperhewitt-swatchbook) and [py-cooperhewitt-roboteyes-colors](https://github.com/aaronland/py-cooperhewitt-roboteyes-colors) (and by extension [RoyGBiv](https://github.com/givp/RoyGBiv)) packages, but today it is only a partial implementation.
+This is work in progress. It appears to have bugs.
 
-Also, this documentation is incomplete.
+## Documentation
+
+Documentation is incomplete.
 
 ## Example
 
@@ -24,6 +16,7 @@ Also, this documentation is incomplete.
 package main
 
 import (
+	"context"
 	"flag"
 	"image"
 	_ "image/jpeg"
@@ -39,11 +32,9 @@ func main() {
 
 	flag.Parse()
 
-	ex, _ := extruder.NewNamedExtruder("vibrant")
-
-	gr, _ := grid.NewNamedGrid("euclidian")
-
-	p, _ := palette.NewNamedPalette("css4")
+	ex, _ := extruder.NewExtruder(ctx, "vibrant://")
+	gr, _ := grid.NewGrid(ctx, "euclidian://")
+	p, _ := palette.NewPalette(ctx, "css4://")
 
 	for _, path := range flag.Args() {
 

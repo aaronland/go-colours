@@ -1,22 +1,31 @@
 package extruder
 
 import (
-	"errors"
+	"context"
+	"fmt"
+	"image"
+	"strings"
+
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
-	"image"
-	_ "log"
-	_ "sort"
 )
 
 type VibrantExtruder struct {
-	colours.Extruder
+	Extruder
 	max_colours uint32
 }
 
-func NewVibrantExtruder(args ...interface{}) (colours.Extruder, error) {
+func init() {
+	ctx := context.Background()
+	err := RegisterExtruder(ctx, "vibrant", NewVibrantExtruder)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func NewVibrantExtruder(ctx context.Context, uri string) (Extruder, error) {
 
 	v := VibrantExtruder{
 		max_colours: 24,
@@ -56,15 +65,19 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		cl, ok := colorful.MakeColor(sw.Color())
 
 		if !ok {
-			return nil, errors.New("Unable to make color")
+			return nil, fmt.Errorf("Unable to make color, %v", sw.Color())
 		}
 
 		hex := cl.Hex()
+		hex = strings.TrimLeft(hex, "#")
 
-		c, err := colours.NewColour(hex, hex, "vibrant")
+		ctx := context.Background()
+
+		c_uri := fmt.Sprintf("common://?hex=%s&name=%s&ref=vibrant", hex, hex)
+		c, err := colours.NewColour(ctx, c_uri)
 
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Failed to create new color '%s', %w", c_uri, err)
 		}
 
 		results = append(results, c)

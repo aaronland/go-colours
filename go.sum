@@ -1,5 +1,7 @@
 github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89 h1:k8/G7/7+vhkmphbzRSHulomGLxKJnM6Dp5NJ2HePGwY=
 github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89/go.mod h1:xu1tbmzBGes+jcIUU9yATLxmOoxdCZT0hUp5HY1c6/A=
+github.com/aaronland/go-roster v1.0.0 h1:FRDGrTqsYySKjWnAhbBGXyeGlI/o5/t9FZYCbUmyQtI=
+github.com/aaronland/go-roster v1.0.0/go.mod h1:KIsYZgrJlAsyb9LsXSCvlqvbcCBVjCSqcQiZx42i9ro=
 github.com/gonum/blas v0.0.0-20181208220705-f22b278b28ac h1:Q0Jsdxl5jbxouNs1TQYt0gxesYMU4VXRbsTlgDloZ50=
 github.com/gonum/blas v0.0.0-20181208220705-f22b278b28ac/go.mod h1:P32wAyui1PQ58Oce/KYkOqQv8cVw1zAapXOl+dRFGbc=
 github.com/gonum/floats v0.0.0-20181209220543-c233463c7e82 h1:EvokxLQsaaQjcWVWSV38221VAK7qc2zhaO17bKys/18=

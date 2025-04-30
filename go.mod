@@ -6,6 +6,7 @@ toolchain go1.24.2
 
 require (
 	github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89
+	github.com/aaronland/go-roster v1.0.0
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/neocortical/noborders v0.0.0-20180212065722-427885311d44
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
