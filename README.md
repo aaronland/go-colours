@@ -78,6 +78,7 @@ type Colour interface {
 ```
 type Extruder interface {
 	Colours(image.Image, int) ([]Colour, error)
+	Name() string
 }
 ```
 
@@ -102,31 +103,32 @@ type Palette interface {
 
 Extruders are the things that generate a palette of colours for an `image.Image`.
 
-### vibrant
+### vibrant://
 
 This returns colours using the [vibrant](github.com/RobCherry/vibrant) package but rather than ranking colours using a particular metric it returns specific named "swatches" that are recast as `colours.Colour` interfaces. They are: `VibrantSwatch, LightVibrantSwatch, DarkVibrantSwatch, MutedSwatch, LightMutedSwatch, DarkMutedSwatch`.
+
+### marekm4://
+
+This returns colours using the [marekm4/color-extractor](https://github.com/marekm4/color-extractor) package.
 
 ### Grids
 
 Grids are the things that perform operations or compare colours.
 
-### euclidian
+### euclidian://
 
 ### Palettes
 
 Palettes are a fixed set of colours.
 
-### crayola
+### crayola://
 
-### css3
+### css3://
 
-### css4
+### css4://
 
 ## See also
 
 * https://github.com/RobCherry/vibrant
-* https://github.com/lucasb-eyer/go-colorful
-
-* https://github.com/aaronland/py-cooperhewitt-swatchbook
-* https://github.com/aaronland/py-cooperhewitt-roboteyes-colors
+* https://github.com/marekm4/color-extractor
 * https://github.com/givp/RoyGBiv

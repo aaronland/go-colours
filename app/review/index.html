@@ -18,7 +18,7 @@
 	<h3>{{ $ex.Extruder }}</h3>
 <table>
     <tr>
-	<th>&#160;</th>
+	<th>{{ $ex.Extruder }}</th>
 	{{ range $_, $p := $ex.Palettes -}}
 	<th>{{ $p }}</th>	
 	{{ end -}}
