@@ -105,7 +105,9 @@ Extruders are the things that generate a palette of colours for an `image.Image`
 
 ### vibrant://
 
-This returns colours using the [vibrant](github.com/RobCherry/vibrant) package but rather than ranking colours using a particular metric it returns specific named "swatches" that are recast as `colours.Colour` interfaces. They are: `VibrantSwatch, LightVibrantSwatch, DarkVibrantSwatch, MutedSwatch, LightMutedSwatch, DarkMutedSwatch`.
+This returns colours using the [vibrant](github.com/RobCherry/vibrant) package.
+
+Importantly, this uses the [sfomuseum/vibrant](https://github.com/sfomuseum/vibrant) of the package to enable the filtering out of transparent pixels.
 
 ### marekm4://
 
