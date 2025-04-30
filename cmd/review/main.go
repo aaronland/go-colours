@@ -1,3 +1,6 @@
+// Command-line tool to generate an HTML page (and associated assets) to review the colour extraction
+// for an image using one or more extruders and one or more palettes. The application will spawn a short-lived
+// web server to serve the HTML review on a random port number and open its URI in the default browser.
 package main
 
 import (
@@ -63,7 +66,7 @@ func main() {
 
 	flag.Var(&extruder_uris, "extruder-uri", "Zero or more aaronland/go-colours/extruder.Extruder URIs. Default is to use simple:// and vibrant://")
 	flag.Var(&palette_uris, "palette-uri", "Zero or more aaronland/go-colours/palette.Palette URIs. Default is to use css3://, css4:// and crayola://")
-	flag.StringVar(&root, "root", "", "If empty a new temporary directory will be created.")
+	flag.StringVar(&root, "root", "", "The path to a directory where images and HTML files associated with the review should be stored. If empty a new temporary directory will be created (and deleted when the application exits).")
 
 	flag.Parse()
 
