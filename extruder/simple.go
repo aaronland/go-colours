@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"image"
 	"sort"
-	"sync"
 	"strings"
-	
+	"sync"
+
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 )
@@ -31,6 +31,10 @@ func NewSimpleExtruder(ctx context.Context, uri string) (Extruder, error) {
 	ex := SimpleExtruder{}
 
 	return &ex, nil
+}
+
+func (ex *SimpleExtruder) Name() string {
+	return "simple"
 }
 
 func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, error) {

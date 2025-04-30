@@ -1,0 +1,47 @@
+<html>
+    <head>
+	<title>Colours</title>
+    </head>
+    <body>
+	
+{{ range $i, $im :=  .Images -}}
+<div style="border:solid thin; width:600px; float:left;margin:.5rem;padding:.5rem;">
+
+    <div style="height:650px;">
+	<div style="display:flex; justify-content: center;">
+	    <img src="{{ $im.URI }}" style="max-height:600px; max-width:600px;" />
+	</div>
+    </div>
+
+    {{ range $_, $ex := $im.Extrusions -}}
+    <div style="float:left; border:solid thin; padding:.5rem;margin:.5rem;">
+	<h3>{{ $ex.Extruder }}</h3>
+<table>
+    <tr>
+	<th>&#160;</th>
+	{{ range $_, $p := $ex.Palettes -}}
+	<th>{{ $p }}</th>	
+	{{ end -}}
+    </tr>
+    
+    {{ range $j, $sw := $ex.Swatches -}}
+    <tr>
+	<td>
+	    <div style="width:50px; height: 25px; background-color: {{$sw.Colour.Hex }};">&#160;</div>
+	</td>
+	{{ range $k, $o := $sw.Closest -}}
+	<td>
+	    <div style="width:50px; height: 25px; background-color: {{$o.Colour.Hex }};">&#160;</div>
+	</td>
+	{{ end -}}
+    </tr>
+    {{ end -}}
+</table>
+</div>
+{{ end -}}
+
+</div>
+{{ end -}}
+
+    </body>
+</html>
