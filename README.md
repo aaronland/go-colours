@@ -4,7 +4,7 @@ Go package for working with colours, principally colour extraction and "snap to 
 
 ## Important
 
-This is work in progress. It appears to have bugs.
+This is work in progress.
 
 ## Documentation
 
