@@ -2,6 +2,7 @@ module github.com/aaronland/go-colours
 
 go 1.24.2
 
+// https://github.com/RobCherry/vibrant/pull/3	     
 replace github.com/RobCherry/vibrant => github.com/sfomuseum/vibrant v0.0.0-20250430212339-abb21560aa26
 
 require (
