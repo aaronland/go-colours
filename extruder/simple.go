@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"image"
 	"sort"
-	"sync"
 	"strings"
-	
+	"sync"
+
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 )

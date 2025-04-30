@@ -10,6 +10,7 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/neocortical/noborders v0.0.0-20180212065722-427885311d44
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
+	github.com/sfomuseum/go-www-show v1.0.0
 	golang.org/x/image v0.26.0
 )
 
@@ -21,4 +22,6 @@ require (
 	github.com/gonum/lapack v0.0.0-20181123203213-e4cdc5a0bff9 // indirect
 	github.com/gonum/matrix v0.0.0-20181209220409-c518dec07be9 // indirect
 	github.com/gonum/stat v0.0.0-20181125101827-41a0da705a5b // indirect
+	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )

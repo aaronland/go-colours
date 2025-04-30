@@ -1,0 +1,42 @@
+<html>
+    <head>
+	<title>Colours</title>
+    </head>
+    <body>
+	
+{{ range $i, $im :=  .Images -}}
+<div style="border:solid thin; width:480px; float:left;margin:.5rem;padding:.5rem;">
+
+    <div style="height:500px;">
+	<div style="display:flex; justify-content: center;">
+	    <img src="{{ $im.URI }}" style="max-height:480px; max-width:480px;" />
+	</div>
+    </div>
+    
+<table>
+    <tr>
+	<th>Vibrant</th>
+	<th>CSS3</th>	
+	<th>CSS4</th>
+	<th>Crayola</th>
+    </tr>
+    
+    {{ range $j, $sw := $im.Swatches -}}
+    <tr>
+	<td>
+	    <div style="width:25px; height: 25px; background-color: {{$sw.Colour.Hex }};">&#160;</div>
+	</td>
+	{{ range $k, $o := $sw.Closest -}}
+	<td>
+	    <div style="width:25px; height: 25px; background-color: {{$o.Colour.Hex }};">&#160;</div>
+	</td>
+	{{ end -}}
+    </tr>
+    {{ end -}}
+</table>
+
+</div>
+{{ end -}}
+
+    </body>
+</html>
