@@ -26,13 +26,13 @@ func main() {
 	gr, err := grid.NewGrid(ctx, grid_uri)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to create new grid, %v", err)
 	}
 
 	p, err := palette.NewPalette(ctx, palette_uri)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to create new palette, %v", err)
 	}
 
 	for _, hex := range flag.Args() {
@@ -42,13 +42,13 @@ func main() {
 		target, err := colours.NewColour(ctx, c_uri)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("Failed to create new colour for uri '%s', %v", c_uri, err)
 		}
 
 		match, err := gr.Closest(target, p)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("Failed to derive closest match, %v", err)
 		}
 
 		log.Printf("%s SNAPS TO %s\n", target, match)

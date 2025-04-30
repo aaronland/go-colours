@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 
 	"github.com/aaronland/go-colours"
 	"github.com/aaronland/go-colours/palette"
@@ -36,7 +37,7 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, plt palette.Palette) (co
 	cl, err := colorful.Hex(target.Hex())
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to derive hex, %w", err)
 	}
 
 	r1, g1, b1 := cl.RGB255()
@@ -74,7 +75,10 @@ func (eu *EuclidianGrid) Closest(target colours.Colour, plt palette.Palette) (co
 
 	ctx := context.Background()
 
-	c_uri := fmt.Sprintf("common://?hex=%s&name=%s&ref=%s", match.Hex(), match.Name(), plt.Reference())
+	c_hex := match.Hex()
+	c_hex = strings.TrimLeft(c_hex, "#")
+
+	c_uri := fmt.Sprintf("common://?hex=%s&name=%s&ref=%s", c_hex, match.Name(), plt.Reference())
 
 	return colours.NewColour(ctx, c_uri)
 }
