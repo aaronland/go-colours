@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"github.com/sfomuseum/go-flags/flagset"
+	"github.com/aaronland/go-colours/extruder"
+	"github.com/aaronland/go-colours/palette"	
 )
 
 type RunOptions struct {
@@ -26,14 +28,17 @@ func RunOptionsFromFlagSet(fs *flag.FlagSet) (*RunOptions, error) {
 	}
 
 	if len(extruder_uris) == 0 {
-		extruder_uris.Set("simple://")
-		extruder_uris.Set("vibrant://")
+
+		for _, scheme := range extruder.ExtruderSchemes() {
+			extruder_uris.Set(scheme)
+		}
 	}
 
 	if len(palette_uris) == 0 {
-		palette_uris.Set("css3://")
-		palette_uris.Set("css4://")
-		palette_uris.Set("crayola://")
+
+		for _, scheme := range palette.PaletteSchemes() {
+			palette_uris.Set(scheme)
+		}
 	}
 
 	opts := &RunOptions{

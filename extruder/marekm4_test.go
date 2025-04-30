@@ -9,10 +9,10 @@ func TestSimpleExtruder(t *testing.T) {
 
 	ctx := context.Background()
 
-	_, err := NewExtruder(ctx, "simple://")
+	_, err := NewExtruder(ctx, "marekm4://")
 
 	if err != nil {
-		t.Fatalf("Failed to vibrant extruder, %v", err)
+		t.Fatalf("Failed to marekm4 extruder, %v", err)
 	}
 
 	// Do stuff here...

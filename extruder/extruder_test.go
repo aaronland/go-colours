@@ -8,7 +8,7 @@ import (
 func TestNewExtruder(t *testing.T) {
 
 	tests := []string{
-		"simple://",
+		"marekm4://",
 		"vibrant://",
 	}
 
