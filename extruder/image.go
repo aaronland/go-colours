@@ -9,7 +9,7 @@ import (
 
 func PrepareImage(im image.Image) (image.Image, error) {
 
-	im = resize.Resize(100, 0, im, resize.Bilinear)
+	im = resize.Resize(600, 0, im, resize.Bilinear)
 
 	opts := noborders.Opts()
 	opts.SetEntropy(0.05)

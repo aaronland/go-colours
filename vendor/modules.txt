@@ -34,6 +34,9 @@ github.com/gonum/stat
 # github.com/lucasb-eyer/go-colorful v1.2.0
 ## explicit; go 1.12
 github.com/lucasb-eyer/go-colorful
+# github.com/marekm4/color-extractor v1.2.1
+## explicit; go 1.13
+github.com/marekm4/color-extractor
 # github.com/neocortical/noborders v0.0.0-20180212065722-427885311d44
 ## explicit
 github.com/neocortical/noborders
