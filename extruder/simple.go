@@ -8,7 +8,8 @@ import (
 	"image"
 	"sort"
 	"sync"
-
+	"strings"
+	
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 )
@@ -99,6 +100,7 @@ func (ex *SimpleExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 
 			ctx := context.Background()
 
+			hex_value = strings.TrimLeft(hex_value, "#")
 			c_uri := fmt.Sprintf("common://?hex=%s", hex_value)
 
 			colour, err := colours.NewColour(ctx, c_uri)
