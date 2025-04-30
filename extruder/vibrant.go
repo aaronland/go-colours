@@ -4,17 +4,31 @@ import (
 	"context"
 	"fmt"
 	"image"
+	"image/color"
 	"strings"
-
+	_ "log/slog"
+	
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
 )
 
+// Important: IsTransparentFilter relies on the sfomuseum/vibrant fork
+// which exposes Filter.IsAllowed as a public method
+// github.com/sfomuseum/vibrant v0.0.0-20250430212339-abb21560aa26
+
+type IsTransparentFilter struct {
+	vibrant.Filter
+}
+
+func (f *IsTransparentFilter) IsAllowed(c color.Color) bool {
+	_, _, _, a := c.RGBA()
+	return a > 0.0
+}
+
 type VibrantExtruder struct {
 	Extruder
-	max_colours uint32
 }
 
 func init() {
@@ -27,10 +41,7 @@ func init() {
 
 func NewVibrantExtruder(ctx context.Context, uri string) (Extruder, error) {
 
-	v := VibrantExtruder{
-		max_colours: 24,
-	}
-
+	v := VibrantExtruder{}
 	return &v, nil
 }
 
@@ -40,27 +51,18 @@ func (ex *VibrantExtruder) Name() string {
 
 func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, error) {
 
+	results := make([]colours.Colour, 0)
+	
 	pb := vibrant.NewPaletteBuilder(im)
-	pb = pb.MaximumColorCount(v.max_colours)
+	pb = pb.MaximumColorCount(uint32(limit))
 	pb = pb.Scaler(draw.ApproxBiLinear)
 
+	f := new(IsTransparentFilter)
+	pb = pb.AddFilter(f)
+	
 	palette := pb.Generate()
-
-	// swatches := palette.Swatches()
-	// sort.Sort(populationSwatchSorter(swatches))
-
-	swatches := []*vibrant.Swatch{
-		palette.VibrantSwatch(),
-		palette.LightVibrantSwatch(),
-		palette.DarkVibrantSwatch(),
-		palette.MutedSwatch(),
-		palette.LightMutedSwatch(),
-		palette.DarkMutedSwatch(),
-	}
-
-	results := make([]colours.Colour, 0)
-
-	for _, sw := range swatches {
+	
+	for _, sw := range palette.Swatches() {
 
 		if sw == nil {
 			continue
@@ -93,17 +95,3 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 
 	return results, nil
 }
-
-// these are straight copies of vibrant/cli/main.go
-
-type populationSwatchSorter []*vibrant.Swatch
-
-func (p populationSwatchSorter) Len() int           { return len(p) }
-func (p populationSwatchSorter) Less(i, j int) bool { return p[i].Population() > p[j].Population() }
-func (p populationSwatchSorter) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
-
-type hueSwatchSorter []*vibrant.Swatch
-
-func (p hueSwatchSorter) Len() int           { return len(p) }
-func (p hueSwatchSorter) Less(i, j int) bool { return p[i].HSL().H < p[j].HSL().H }
-func (p hueSwatchSorter) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }

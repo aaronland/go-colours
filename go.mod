@@ -1,6 +1,8 @@
 module github.com/aaronland/go-colours
 
-go 1.23.0
+go 1.24.2
+
+replace github.com/RobCherry/vibrant => github.com/sfomuseum/vibrant v0.0.0-20250430212339-abb21560aa26
 
 require (
 	github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89
