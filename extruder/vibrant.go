@@ -4,13 +4,24 @@ import (
 	"context"
 	"fmt"
 	"image"
+	"image/color"
 	"strings"
-
+	_ "log/slog"
+	
 	"github.com/RobCherry/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
 )
+
+type IsTransparentFilter struct {
+	vibrant.Filter
+}
+
+func (f *IsTransparentFilter) IsAllowed(c color.Color) bool {
+	_, _, _, a := c.RGBA()
+	return a > 0.0
+}
 
 type VibrantExtruder struct {
 	Extruder
@@ -44,6 +55,9 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 	pb = pb.MaximumColorCount(v.max_colours)
 	pb = pb.Scaler(draw.ApproxBiLinear)
 
+	f := new(IsTransparentFilter)
+	pb = pb.AddFilter(f)
+	
 	palette := pb.Generate()
 
 	// swatches := palette.Swatches()
@@ -58,6 +72,8 @@ func (v *VibrantExtruder) Colours(im image.Image, limit int) ([]colours.Colour, 
 		palette.DarkMutedSwatch(),
 	}
 
+	swatches = palette.Swatches()
+	
 	results := make([]colours.Colour, 0)
 
 	for _, sw := range swatches {
