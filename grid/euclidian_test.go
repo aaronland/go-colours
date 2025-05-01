@@ -2,8 +2,6 @@ package grid
 
 import (
 	"context"
-	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/aaronland/go-colours"
@@ -45,17 +43,13 @@ func TestEuclidianClosestCSS3(t *testing.T) {
 
 	for hex, expected := range tests {
 
-		hex = strings.TrimLeft(hex, "#")
-
-		c_uri := fmt.Sprintf("common://?hex=%s", hex)
-
-		target, err := colours.NewColour(ctx, c_uri)
+		target_c, err := colours.NewHexColour(ctx, hex)
 
 		if err != nil {
-			t.Fatalf("Failed to create new colour for uri '%s', %v", c_uri, err)
+			t.Fatalf("Failed to create new colour for hex '%s', %v", hex, err)
 		}
 
-		match, err := gr.Closest(target, plt)
+		match, err := gr.Closest(ctx, target_c, plt)
 
 		if err != nil {
 			t.Fatalf("Failed to derive closest match, %v", err)

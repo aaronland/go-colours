@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/aaronland/go-colours/extruder"
-	"github.com/aaronland/go-colours/palette"	
+	"github.com/aaronland/go-colours/palette"
+	"github.com/sfomuseum/go-flags/flagset"
 )
 
 type RunOptions struct {

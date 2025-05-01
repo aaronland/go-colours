@@ -64,7 +64,7 @@ func main() {
 
 		log.Println(path)
 
-		c, err := ex.Colours(im, 5)
+		c, err := ex.Colours(ctx, im, 5)
 
 		if err != nil {
 			log.Fatal(err)
@@ -73,7 +73,7 @@ func main() {
 		for _, c := range c {
 			log.Println(c)
 
-			cl, _ := gr.Closest(c, p)
+			cl, _ := gr.Closest(ctx, c, p)
 
 			log.Println(cl)
 		}

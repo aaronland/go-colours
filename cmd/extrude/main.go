@@ -43,7 +43,7 @@ func main() {
 			log.Fatalf("Failed to decode %s, %v", path, err)
 		}
 
-		c, err := ex.Colours(im, 5)
+		c, err := ex.Colours(ctx, im, 5)
 
 		if err != nil {
 			log.Fatalf("Failed to derive colours, %v", err)

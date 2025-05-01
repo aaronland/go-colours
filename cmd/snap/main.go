@@ -45,7 +45,7 @@ func main() {
 			log.Fatalf("Failed to create new colour for uri '%s', %v", c_uri, err)
 		}
 
-		match, err := gr.Closest(target, p)
+		match, err := gr.Closest(ctx, target, p)
 
 		if err != nil {
 			log.Fatalf("Failed to derive closest match, %v", err)
