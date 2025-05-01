@@ -3,12 +3,12 @@ module github.com/aaronland/go-colours
 go 1.24.2
 
 require (
+	github.com/RobCherry/vibrant v0.0.0-20250501174501-d90de4256706
 	github.com/aaronland/go-roster v1.0.0
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/marekm4/color-extractor v1.2.1
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-www-show v1.0.0
-	github.com/sfomuseum/vibrant v0.0.1
 	golang.org/x/image v0.26.0
 )
 

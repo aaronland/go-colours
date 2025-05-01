@@ -1,22 +1,69 @@
 <html>
     <head>
 	<title>Colours</title>
+	<style type="text/css">
+	    .swatch {
+		    width:50px;
+		    height: 25px;
+		    margin-bottom:.25rem;
+	    }
+	 .hex {
+		 font-family:monospace;
+	 }
+	 .grid {
+		 display: grid;
+		 grid-template-columns: 1fr 1fr;
+	 }
+	 
+	 .extrusions {
+		 display: grid;
+		 grid-template-columns: 1fr 1fr;
+		 
+	 }
+	 
+	 .extrusion {
+		 border:solid thin;
+		 padding:.5rem;margin:.5rem;
+	 }
+	 .extrusion-colours {
+		 display:flex;
+		 justify-content:center;
+	 }
+	 .picture {
+		 border:solid thin;
+		 width:600px;
+		 float:left;
+		 margin:.5rem;
+		 padding:.5rem;
+	 }
+	 .img-wrapper {
+		 display:flex;
+		 justify-content: center;
+	 }
+
+	 img {
+		 max-height:600px;
+		 max-width:600px;
+	 }
+	    </style>
     </head>
     <body>
-	
-{{ range $i, $im :=  .Images -}}
-<div style="border:solid thin; width:600px; float:left;margin:.5rem;padding:.5rem;">
 
-    <div style="height:650px;">
-	<div style="display:flex; justify-content: center;">
-	    <img src="{{ $im.URI }}" style="max-height:600px; max-width:600px;" />
+	<div class="grid">
+{{ range $i, $im :=  .Images -}}
+<div class="picture">
+
+    <div style="min-height:500px;">
+	<div class="img-wrapper">
+	    <img src="{{ $im.URI }}" />
 	</div>
     </div>
-
+    
+    <div class="extrusions">
     {{ range $_, $ex := $im.Extrusions -}}
-    <div style="float:left; border:solid thin; padding:.5rem;margin:.5rem;">
+    <div class="extrusion">
 	<h3>{{ $ex.Extruder }}</h3>
-<table>
+<table class="extrusion-colours">
     <tr>
 	<th>{{ $ex.Extruder }}</th>
 	{{ range $_, $p := $ex.Palettes -}}
@@ -27,11 +74,13 @@
     {{ range $j, $sw := $ex.Swatches -}}
     <tr>
 	<td>
-	    <div style="width:50px; height: 25px; background-color: {{$sw.Colour.Hex }};">&#160;</div>
+	    <div class="swatch" style="background-color: {{$sw.Colour.Hex }};">&#160;</div>
+	    <small class="hex">{{$sw.Colour.Hex }}</small>
 	</td>
 	{{ range $k, $o := $sw.Closest -}}
 	<td>
-	    <div style="width:50px; height: 25px; background-color: {{$o.Colour.Hex }};">&#160;</div>
+	    <div class="swatch" style="background-color: {{$o.Colour.Hex }};">&#160;</div>
+	    <small class="hex">{{$o.Colour.Hex }}</small>	    
 	</td>
 	{{ end -}}
     </tr>
@@ -39,9 +88,10 @@
 </table>
 </div>
 {{ end -}}
-
+    </div>
+    
 </div>
 {{ end -}}
-
+</div>
     </body>
 </html>
