@@ -7,6 +7,7 @@ require (
 	github.com/aaronland/go-roster v1.0.0
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/marekm4/color-extractor v1.2.1
+	github.com/mccutchen/palettor v1.0.0
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-www-show v1.0.0
 	golang.org/x/image v0.26.0
