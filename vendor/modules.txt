@@ -1,6 +1,3 @@
-# github.com/RobCherry/vibrant v0.0.0-20160904011657-0680b8cf1c89 => github.com/sfomuseum/vibrant v0.0.0-20250430212339-abb21560aa26
-## explicit; go 1.24.2
-github.com/RobCherry/vibrant
 # github.com/aaronland/go-roster v1.0.0
 ## explicit; go 1.16
 github.com/aaronland/go-roster
@@ -20,6 +17,9 @@ github.com/sfomuseum/go-flags/multi
 # github.com/sfomuseum/go-www-show v1.0.0
 ## explicit; go 1.23.0
 github.com/sfomuseum/go-www-show
+# github.com/sfomuseum/vibrant v0.0.1
+## explicit; go 1.24.2
+github.com/sfomuseum/vibrant
 # golang.org/x/image v0.26.0
 ## explicit; go 1.23.0
 golang.org/x/image/draw
@@ -28,4 +28,3 @@ golang.org/x/image/math/f64
 ## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/windows
-# github.com/RobCherry/vibrant => github.com/sfomuseum/vibrant v0.0.0-20250430212339-abb21560aa26

@@ -8,7 +8,7 @@ import (
 	"strings"
 	_ "log/slog"
 	
-	"github.com/RobCherry/vibrant"
+	"github.com/sfomuseum/vibrant"
 	"github.com/aaronland/go-colours"
 	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/image/draw"
