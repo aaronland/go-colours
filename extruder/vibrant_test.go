@@ -2,9 +2,29 @@ package extruder
 
 import (
 	"context"
-	"testing"
 	"image/color"
+	"testing"
 )
+
+func TestNewVibrantColour(t *testing.T) {
+
+	ctx := context.Background()
+	hex := "#cc6699"
+
+	c, err := NewVibrantColour(ctx, hex)
+
+	if err != nil {
+		t.Fatalf("Failed to create new vibrant colour, %v", err)
+	}
+
+	if c.Name() != VIBRANT {
+		t.Fatalf("Invalid ref for vibrant colour, %s", c.Name())
+	}
+
+	if c.Hex() != hex {
+		t.Fatalf("Invalid hex, %s (expected %s)", c.Hex(), hex)
+	}
+}
 
 func TestVibrantExtruder(t *testing.T) {
 
@@ -22,7 +42,7 @@ func TestVibrantExtruder(t *testing.T) {
 func TestIsTransparentFilter(t *testing.T) {
 
 	f := new(IsTransparentFilter)
-	
+
 	c := color.NRGBA{
 		R: 255,
 		G: 255,
@@ -30,7 +50,7 @@ func TestIsTransparentFilter(t *testing.T) {
 		A: 0,
 	}
 
-	if f.IsAllowed(c){
+	if f.IsAllowed(c) {
 		t.Fatalf("colour should NOT be allowed")
 	}
 
@@ -41,8 +61,8 @@ func TestIsTransparentFilter(t *testing.T) {
 		A: 10,
 	}
 
-	if !f.IsAllowed(c2){
+	if !f.IsAllowed(c2) {
 		t.Fatalf("colour SHOULD be allowed")
 	}
-	
+
 }

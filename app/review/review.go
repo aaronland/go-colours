@@ -149,7 +149,7 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 
 			swatches := make([]*Swatch, 0)
 
-			colours, err := ex.Colours(im, 5)
+			colours, err := ex.Colours(ctx, im, 5)
 
 			if err != nil {
 				return nil, fmt.Errorf("Failed to derive colours for image, %w", err)
@@ -161,7 +161,7 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 
 				for _, p := range palettes {
 
-					c2, err := gr.Closest(c, p)
+					c2, err := gr.Closest(ctx, c, p)
 
 					if err != nil {
 						return nil, fmt.Errorf("Failed to derive closest, %w", err)
