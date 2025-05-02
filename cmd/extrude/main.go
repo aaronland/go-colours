@@ -1,56 +1,20 @@
+// Command line tool to extrude (derive) dominant colours from one or more images as well as closest matches colours
+// using zero or more "snap-to-grid" colour palettes as JSON-encoded data written to STDOUT.
 package main
 
 import (
 	"context"
-	"flag"
-	"image"
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
 	"log"
-	"os"
 
-	"github.com/aaronland/go-colours/extruder"
+	"github.com/aaronland/go-colours/app/extrude"
 )
 
 func main() {
 
-	var extruder_uri string
-
-	flag.StringVar(&extruder_uri, "extruder-uri", "vibrant://", "...")
-
-	flag.Parse()
-
 	ctx := context.Background()
-
-	ex, err := extruder.NewExtruder(ctx, extruder_uri)
+	err := extrude.Run(ctx)
 
 	if err != nil {
-		log.Fatalf("Failed to create new extruder, %v", err)
-	}
-
-	for _, path := range flag.Args() {
-
-		f, err := os.Open(path)
-
-		if err != nil {
-			log.Fatalf("Failed to open %s for reading, %v", path, err)
-		}
-
-		im, _, err := image.Decode(f)
-
-		if err != nil {
-			log.Fatalf("Failed to decode %s, %v", path, err)
-		}
-
-		c, err := ex.Colours(ctx, im, 5)
-
-		if err != nil {
-			log.Fatalf("Failed to derive colours, %v", err)
-		}
-
-		for _, c := range c {
-			log.Println(c)
-		}
+		log.Fatal(err)
 	}
 }

@@ -1,8 +1,10 @@
-package review
+package extrude
 
 import (
 	"flag"
 	"fmt"
+	"io"
+	"os"
 
 	"github.com/aaronland/go-colours/extruder"
 	"github.com/aaronland/go-colours/palette"
@@ -12,10 +14,10 @@ import (
 type RunOptions struct {
 	ExtruderURIs []string
 	PaletteURIs  []string
-	Root         string
-	AllowRemote  bool
 	Images       []string
+	AllowRemote  bool
 	Verbose      bool
+	Writer       io.Writer
 }
 
 func RunOptionsFromFlagSet(fs *flag.FlagSet) (*RunOptions, error) {
@@ -45,8 +47,8 @@ func RunOptionsFromFlagSet(fs *flag.FlagSet) (*RunOptions, error) {
 	opts := &RunOptions{
 		ExtruderURIs: extruder_uris,
 		PaletteURIs:  palette_uris,
-		Root:         root,
 		AllowRemote:  allow_remote,
+		Writer:       os.Stdout,
 		Images:       fs.Args(),
 		Verbose:      verbose,
 	}
