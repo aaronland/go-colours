@@ -1,4 +1,4 @@
-package extract
+package extrude
 
 import (
 	"context"
@@ -21,43 +21,54 @@ import (
 )
 
 type Closest struct {
-	Palette string
-	Colour  colours.Colour
+	Palette string         `json:"palette"`
+	Colour  colours.Colour `json:"colour"`
 }
 
 type Swatch struct {
-	Colour  colours.Colour
-	Closest []*Closest
+	Colour  colours.Colour `json:"colour"`
+	Closest []*Closest     `json:"closest"`
 }
 
 type Extrusion struct {
-	Extruder string
-	Palettes []string
-	Swatches []*Swatch
+	Extruder string    `json:"extruder"`
+	Palettes []string  `json:"palettes"`
+	Swatches []*Swatch `json:"swatches"`
 }
 
 type Image struct {
-	URI        string
-	Extrusions []*Extrusion
+	URI        string       `json:"uri"`
+	Extrusions []*Extrusion `json:"extrusions"`
 }
 
-type ExtractOptions struct {
+type ExtrudeOptions struct {
+	// A list of aaronland/go-colours/extruder.Extruder URIs to instantiate.
 	ExtruderURIs []string
-	PaletteURIs  []string
-	Root         string
-	Images       []string
-	AllowRemote  bool
-	CloneImages  bool
+	// A list of aaronland/go-colours/palette.Palette URIs to instantiate.
+	PaletteURIs []string
+	// The directory where temporary or derivative image files should be written. If empty a temporary directory will be created.
+	Root string
+	// The list of images to extrude colour palettes for.
+	Images []string
+	// Allow fetching remote images via HTTP or HTTPS.
+	AllowRemote bool
+	// Create derivative copies of images for post-processing operations, for example the HTML page used by the app/review code.
+	CloneImages bool
 }
 
-type ExtractResponse struct {
-	Images    []*Image
-	Palettes  []string
-	Root      string
+type ExtrudeResponse struct {
+	// The list of final `Image` instances for which colour palettes were derived.
+	Images []*Image
+	// The list of palette names for which "snap-to-grid" matches were derived.
+	Palettes []string
+	// The absolute path of the directory where derivative image files were written.
+	Root string
+	// A boolean flag indicating whether `Root` (the directory where derivative image files were written) was created at runtime as a temporary directory.
 	IsTmpRoot bool
 }
 
-func Extract(ctx context.Context, opts *ExtractOptions) (*ExtractResponse, error) {
+// Extrude (derive) dominant colours from one or more images as well as closest matches colours using zero or more "snap-to-grid" colour palettes.
+func Extrude(ctx context.Context, opts *ExtrudeOptions) (*ExtrudeResponse, error) {
 
 	var abs_root string
 	var tmp_root bool
@@ -75,7 +86,7 @@ func Extract(ctx context.Context, opts *ExtractOptions) (*ExtractResponse, error
 
 	} else {
 
-		root_dir, err := os.MkdirTemp("", "extract")
+		root_dir, err := os.MkdirTemp("", "extrude")
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to create temp dir, %w", err)
@@ -280,7 +291,7 @@ func Extract(ctx context.Context, opts *ExtractOptions) (*ExtractResponse, error
 		str_palettes = append(str_palettes, p.Reference())
 	}
 
-	rsp := &ExtractResponse{
+	rsp := &ExtrudeResponse{
 		Images:    images,
 		Palettes:  str_palettes,
 		Root:      abs_root,

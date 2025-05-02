@@ -14,7 +14,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/aaronland/go-colours/extract"
+	"github.com/aaronland/go-colours/extrude"
 	"github.com/sfomuseum/go-www-show"
 )
 
@@ -22,7 +22,7 @@ import (
 var index_html string
 
 type TemplateVars struct {
-	Images   []*extract.Image
+	Images   []*extrude.Image
 	Palettes []string
 }
 
@@ -49,23 +49,23 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 		slog.Debug("Verbose logging enabled")
 	}
 
-	extract_opts := &extract.ExtractOptions{
+	extrude_opts := &extrude.ExtrudeOptions{
 		ExtruderURIs: opts.ExtruderURIs,
 		PaletteURIs:  opts.PaletteURIs,
 		Root:         opts.Root,
 		Images:       opts.Images,
-		AllowRemote:  true,
+		AllowRemote:  opts.AllowRemote,
 		CloneImages:  true,
 	}
 
-	extract_rsp, err := extract.Extract(ctx, extract_opts)
+	extrude_rsp, err := extrude.Extrude(ctx, extrude_opts)
 
 	if err != nil {
-		return fmt.Errorf("Failed to extract images, %w", err)
+		return fmt.Errorf("Failed to extrude images, %w", err)
 	}
 
-	if extract_rsp.IsTmpRoot {
-		defer os.RemoveAll(extract_rsp.Root)
+	if extrude_rsp.IsTmpRoot {
+		defer os.RemoveAll(extrude_rsp.Root)
 	}
 
 	//
@@ -76,7 +76,7 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 		return fmt.Errorf("Failed to parse index template, %w", err)
 	}
 
-	index_path := filepath.Join(extract_rsp.Root, "index.html")
+	index_path := filepath.Join(extrude_rsp.Root, "index.html")
 
 	index_wr, err := os.OpenFile(index_path, os.O_RDWR|os.O_CREATE, 0644)
 
@@ -85,8 +85,8 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 	}
 
 	vars := TemplateVars{
-		Images:   extract_rsp.Images,
-		Palettes: extract_rsp.Palettes,
+		Images:   extrude_rsp.Images,
+		Palettes: extrude_rsp.Palettes,
 	}
 
 	err = index_t.Execute(index_wr, vars)
@@ -105,7 +105,7 @@ func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 
 	mux := http.NewServeMux()
 
-	dir_fs := os.DirFS(extract_rsp.Root)
+	dir_fs := os.DirFS(extrude_rsp.Root)
 	http_fs := http.FileServerFS(dir_fs)
 
 	mux.Handle("/", http_fs)
