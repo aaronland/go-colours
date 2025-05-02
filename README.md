@@ -66,7 +66,7 @@ go build -mod vendor -ldflags="-s -w" -o bin/extrude cmd/extrude/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/inspect cmd/inspect/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/snap cmd/snap/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/review cmd/review/main.go
-``
+```
 
 ### review
 
