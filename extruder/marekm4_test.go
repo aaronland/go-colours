@@ -25,7 +25,7 @@ func TestNewMarekm4Colour(t *testing.T) {
 	}
 }
 
-func TestSimpleExtruder(t *testing.T) {
+func TestMarekm4Extruder(t *testing.T) {
 
 	ctx := context.Background()
 

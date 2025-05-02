@@ -103,15 +103,17 @@ type Palette interface {
 
 Extruders are the things that generate a palette of colours for an `image.Image`.
 
-### vibrant://
-
-This returns colours using the [vibrant](github.com/RobCherry/vibrant) package.
-
-Importantly, this uses the [sfomuseum/vibrant](https://github.com/sfomuseum/vibrant) fork of the package to enable the filtering out of transparent pixels.
-
 ### marekm4://
 
 This returns colours using the [marekm4/color-extractor](https://github.com/marekm4/color-extractor) package.
+
+### quant://
+
+This returns colours using the [soniakeys/quant](https://github.com/soniakeys/quant) package (specifically the [mean.Quantizer](https://pkg.go.dev/github.com/soniakeys/quant@v1.0.0/mean#Quantizer)).
+
+### vibrant://
+
+This returns colours using the [vibrant](github.com/RobCherry/vibrant) package.
 
 ### Grids
 
@@ -133,4 +135,5 @@ Palettes are a fixed set of colours.
 
 * https://github.com/RobCherry/vibrant
 * https://github.com/marekm4/color-extractor
+* https://github.com/soniakeys/quant
 * https://github.com/givp/RoyGBiv
