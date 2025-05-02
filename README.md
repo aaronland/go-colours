@@ -58,6 +58,45 @@ func main() {
 
 _Note that error handling has been removed for the sake of brevity._
 
+## Tools
+
+```
+$> make cli
+go build -mod vendor -ldflags="-s -w" -o bin/extrude cmd/extrude/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/inspect cmd/inspect/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/snap cmd/snap/main.go
+go build -mod vendor -ldflags="-s -w" -o bin/review cmd/review/main.go
+``
+
+### review
+
+Command line tool to perform colour extraction and "snap-to-grid" matching with one or more colour palettes for images, emitting the results as an HTML page.
+
+```
+$> ./bin/review -h
+  -extruder-uri value
+    	Zero or more aaronland/go-colours/extruder.Extruder URIs. Default is to use all registered extruder schemes.
+  -palette-uri value
+    	Zero or more aaronland/go-colours/palette.Palette URIs. Default is to use all registered palette schemes.
+  -root string
+    	The path to a directory where images and HTML files associated with the review should be stored. If empty a new temporary directory will be created (and deleted when the application exits).
+  -verbose
+    	Enable verbose (debug) logging.
+```
+
+#### Example
+
+```
+$> ./bin/review  https://static.sfomuseum.org/media/176/270/453/3/1762704533_jnxsOwjYqsa8RyGsJrYFJvAjnQMe1Nqv_z.jpg
+2025/05/01 17:18:28 INFO Server is ready and features are viewable url=http://localhost:50530
+```
+
+And then when you open your browser to `http://localhost:50530` (or whatever address the `review` tool chooses) you'd see something like this:
+
+![](docs/images/go-colours-review.png)
+
+Unless you specify a custom `-root` flag all the images used by the web application (excluding the source images themselves) will be automatically be deleted when you stop the tool.
+
 ## Interfaces
 
 ### Colour
