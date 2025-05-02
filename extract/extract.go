@@ -1,4 +1,4 @@
-package colours
+package extract
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"image"
 	_ "image/gif"
 	_ "image/jpeg"
-	_ "image/png"
+	"image/png"
 	"io"
 	// "log/slog"
 	"net/http"
@@ -46,12 +46,21 @@ type ExtractOptions struct {
 	PaletteURIs  []string
 	Root         string
 	Images       []string
-	AllowRemote bool
+	AllowRemote  bool
+	CloneImages  bool
 }
 
-func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
+type ExtractResponse struct {
+	Images    []*Image
+	Palettes  []string
+	Root      string
+	IsTmpRoot bool
+}
+
+func Extract(ctx context.Context, opts *ExtractOptions) (*ExtractResponse, error) {
 
 	var abs_root string
+	var tmp_root bool
 
 	if opts.Root != "" {
 
@@ -62,6 +71,7 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 		}
 
 		abs_root = root_dir
+		tmp_root = false
 
 	} else {
 
@@ -71,8 +81,8 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 			return nil, fmt.Errorf("Failed to create temp dir, %w", err)
 		}
 
-		defer os.RemoveAll(root_dir)
 		abs_root = root_dir
+		tmp_root = true
 	}
 
 	extruders := make([]extruder.Extruder, len(opts.ExtruderURIs))
@@ -176,7 +186,7 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 			if !opts.AllowRemote {
 				return nil, fmt.Errorf("Remote images not allowed")
 			}
-			
+
 			fname := filepath.Base(path)
 
 			rsp, err := http.Get(path)
@@ -240,7 +250,8 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 
 		images = append(images, im_c)
 
-		/*
+		if opts.CloneImages {
+
 			im_path := filepath.Join(abs_root, fname)
 
 			im_wr, err := os.OpenFile(im_path, os.O_RDWR|os.O_CREATE, 0644)
@@ -260,8 +271,21 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 			if err != nil {
 				return nil, fmt.Errorf("Failed to close %s after writing, %w", im_path, err)
 			}
-		*/
+		}
 	}
 
-	return images, nil
+	str_palettes := make([]string, 0)
+
+	for _, p := range palettes {
+		str_palettes = append(str_palettes, p.Reference())
+	}
+
+	rsp := &ExtractResponse{
+		Images:    images,
+		Palettes:  str_palettes,
+		Root:      abs_root,
+		IsTmpRoot: tmp_root,
+	}
+
+	return rsp, nil
 }
