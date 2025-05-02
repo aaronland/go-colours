@@ -2,10 +2,6 @@
 
 Go package for working with colours, principally colour extraction and "snap to grid"
 
-## Important
-
-This is work in progress.
-
 ## Documentation
 
 Documentation is incomplete.
@@ -32,6 +28,8 @@ func main() {
 
 	flag.Parse()
 
+	ctx := context.Background()
+	
 	ex, _ := extruder.NewExtruder(ctx, "vibrant://")
 	gr, _ := grid.NewGrid(ctx, "euclidian://")
 	p, _ := palette.NewPalette(ctx, "css4://")
@@ -41,11 +39,11 @@ func main() {
 		fh, _ := os.Open(path)
 		im, _, _ := image.Decode(fh)
 
-		colours, _ := ex.Colours(im, 5)
+		colours, _ := ex.Colours(ctx, im, 5)
 
 		for _, c := range colours {
 
-			closest, _ := gr.Closest(c, p)
+			closest, _ := gr.Closest(ctx, c, p)
 
 			for _, cl := range closest {
 				log.Println(c, cl)
