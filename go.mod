@@ -9,6 +9,7 @@ require (
 	github.com/marekm4/color-extractor v1.2.1
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-www-show v1.0.0
+	github.com/soniakeys/quant v1.0.0
 	golang.org/x/image v0.26.0
 )
 

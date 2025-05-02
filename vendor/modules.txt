@@ -20,6 +20,12 @@ github.com/sfomuseum/go-flags/multi
 # github.com/sfomuseum/go-www-show v1.0.0
 ## explicit; go 1.23.0
 github.com/sfomuseum/go-www-show
+# github.com/soniakeys/quant v1.0.0
+## explicit
+github.com/soniakeys/quant
+github.com/soniakeys/quant/internal
+github.com/soniakeys/quant/mean
+github.com/soniakeys/quant/median
 # golang.org/x/image v0.26.0
 ## explicit; go 1.23.0
 golang.org/x/image/draw
