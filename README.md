@@ -66,12 +66,94 @@ go build -mod vendor -ldflags="-s -w" -o bin/snap cmd/snap/main.go
 go build -mod vendor -ldflags="-s -w" -o bin/review cmd/review/main.go
 ```
 
+### extrude
+
+Command line tool to extrude (derive) dominant colours from one or more images as well as closest matches colours using zero or more "snap-to-grid" colour palettes as JSON-encoded data written to STDOUT.
+
+```
+$> ./bin/extrude -h
+Command line tool to extrude (derive) dominant colours from one or more images as well as closest matches colours using zero or more "snap-to-grid" colour palettes as JSON-encoded data written to STDOUT.
+Usage:
+	 ./bin/extrude [options] uri(N) uri(N)
+  -allow-remote
+    	Allow fetching remote images (HTTP(S)). (default true)
+  -extruder-uri value
+    	Zero or more aaronland/go-colours/extruder.Extruder URIs. Default is to use all registered extruder schemes.
+  -palette-uri value
+    	Zero or more aaronland/go-colours/palette.Palette URIs. Default is to use all registered palette schemes.
+  -verbose
+    	Enable verbose (debug) logging.
+```	
+
+#### Example
+
+```
+$> ./bin/extrude  https://static.sfomuseum.org/media/176/270/453/3/1762704533_jnxsOwjYqsa8RyGsJrYFJvAjnQMe1Nqv_z.jpg | jq
+[
+  {
+    "uri": "1762704533_jnxsOwjYqsa8RyGsJrYFJvAjnQMe1Nqv_z.png",
+    "extrusions": [
+      {
+        "extruder": "marekm4",
+        "palettes": [
+          "crayola",
+          "css3",
+          "css4"
+        ],
+        "swatches": [
+          {
+            "colour": {
+              "name": "marekm4",
+              "hex": "#b6baa1",
+              "reference": "b6baa1"
+            },
+            "closest": [
+              {
+                "palette": "crayola",
+                "colour": {
+                  "name": "Cadet Blue",
+                  "hex": "#b0b7c6",
+                  "reference": "crayola"
+                }
+              },
+              {
+                "palette": "css3",
+                "colour": {
+                  "name": "darkgray",
+                  "hex": "#a9a9a9",
+                  "reference": "css3"
+                }
+              },
+              {
+                "palette": "css4",
+                "colour": {
+                  "name": "darkgrey",
+                  "hex": "#a9a9a9",
+                  "reference": "css4"
+                }
+              }
+            ]
+          },
+          {
+            "colour": {
+              "name": "marekm4",
+              "hex": "#728c9a",
+              "reference": "728c9a"
+            },
+	    ...and so on
+```
+
 ### review
 
 Command line tool to perform colour extraction and "snap-to-grid" matching with one or more colour palettes for images, emitting the results as an HTML page.
 
 ```
 $> ./bin/review -h
+Command line tool to perform colour extraction and "snap-to-grid" matching with one or more colour palettes for images, emitting the results as an HTML page.
+Usage:
+	 ./bin/review [options] uri(N) uri(N)
+  -allow-remote
+    	Allow fetching remote images (HTTP(S)). (default true)
   -extruder-uri value
     	Zero or more aaronland/go-colours/extruder.Extruder URIs. Default is to use all registered extruder schemes.
   -palette-uri value
