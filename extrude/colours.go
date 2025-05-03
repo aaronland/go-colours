@@ -7,6 +7,7 @@ import (
 	"github.com/aaronland/go-colours"
 )
 
+// Return a unique set of `colours.Colour` instances for a set of `Images` instances.
 func UniqueColours(images []*Image) []colours.Colour {
 
 	lookup := new(sync.Map)
