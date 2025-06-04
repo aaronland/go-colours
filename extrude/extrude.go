@@ -128,64 +128,10 @@ func Extrude(ctx context.Context, opts *ExtrudeOptions) (*ExtrudeResponse, error
 		palettes[idx] = p
 	}
 
-	derive_colours := func(im image.Image) ([]*Extrusion, error) {
-
-		extrusions := make([]*Extrusion, 0)
-
-		for _, ex := range extruders {
-
-			swatches := make([]*Swatch, 0)
-
-			colours, err := ex.Colours(ctx, im, 5)
-
-			if err != nil {
-				return nil, fmt.Errorf("Failed to derive colours for image, %w", err)
-			}
-
-			for _, c := range colours {
-
-				closest := make([]*Closest, 0)
-
-				for _, p := range palettes {
-
-					c2, err := gr.Closest(ctx, c, p)
-
-					if err != nil {
-						return nil, fmt.Errorf("Failed to derive closest, %w", err)
-					}
-
-					cl := &Closest{
-						Palette: p.Reference(),
-						Colour:  c2,
-					}
-
-					closest = append(closest, cl)
-				}
-
-				sw := &Swatch{
-					Colour:  c,
-					Closest: closest,
-				}
-
-				swatches = append(swatches, sw)
-			}
-
-			palette_labels := make([]string, 0)
-
-			for _, p := range palettes {
-				palette_labels = append(palette_labels, p.Reference())
-			}
-
-			e := &Extrusion{
-				Extruder: ex.Name(),
-				Palettes: palette_labels,
-				Swatches: swatches,
-			}
-
-			extrusions = append(extrusions, e)
-		}
-
-		return extrusions, nil
+	derive_opts := &DeriveExtrusionsOptions{
+		Grid:      gr,
+		Palettes:  palettes,
+		Extruders: extruders,
 	}
 
 	images := make([]*Image, 0)
@@ -248,7 +194,7 @@ func Extrude(ctx context.Context, opts *ExtrudeOptions) (*ExtrudeResponse, error
 			return nil, fmt.Errorf("Failed to decode %s, %w", path, err)
 		}
 
-		extrusions, err := derive_colours(im)
+		extrusions, err := DeriveExtrusions(ctx, derive_opts, im)
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to derive colours, %w", err)
@@ -300,3 +246,4 @@ func Extrude(ctx context.Context, opts *ExtrudeOptions) (*ExtrudeResponse, error
 
 	return rsp, nil
 }
+

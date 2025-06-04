@@ -40,9 +40,7 @@ func ExtrudeFunc () js.Func {
 				return nil
 			}
 			
-			rsp, err := extrude.ExtrudeImages(ctx, extrude_opts, im)
-
-			im, _, err := image.Decode(im_r)
+			rsp, err := extrude.ExtrudeImages(ctx, extrude_opts)
 
 			if err != nil {
 				reject.Invoke(fmt.Sprintf("Failed to extrude image colours, %w", err))
