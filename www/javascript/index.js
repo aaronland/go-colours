@@ -10,7 +10,7 @@ window.addEventListener("load", function load(event){
 	    const opts = {
 		"grid": "euclidian://",
 		"palettes": [ "crayola://" ],
-		"extruders": [ "marekm4" ],
+		"extruders": [ "marekm4://" ],
 	    };
 
 	    const str_opts = JSON.stringify(opts);

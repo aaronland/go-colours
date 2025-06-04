@@ -7,11 +7,10 @@ import (
 	"bytes"
 	"image"
 	_ "image/jpeg"
-	_ "image/png"
 	"syscall/js"
 	"encoding/json"
 	"encoding/base64"
-
+	
 	"github.com/aaronland/go-colours/grid"
 	"github.com/aaronland/go-colours/palette"
 	"github.com/aaronland/go-colours/extruder"			
@@ -34,9 +33,9 @@ func (o *ExtrudeOptions) DeriveExtrusionOptions(ctx context.Context) (*extrude.D
 
 	palettes := make([]palette.Palette, len(o.Palettes))
 	extruders := make([]extruder.Extruder, len(o.Extruders))
-	
+
 	for idx, uri := range o.Palettes {
-		
+
 		p, err := palette.NewPalette(ctx, uri)
 
 		if err != nil {
@@ -95,6 +94,7 @@ func ExtrudeFunc () js.Func {
 				reject.Invoke(fmt.Errorf("Failed to derive extrusion options, %w", err))
 				return nil
 			}
+
 			im_data, err := base64.StdEncoding.DecodeString(im_b64)
 			
 			if err != nil {
@@ -103,7 +103,7 @@ func ExtrudeFunc () js.Func {
 			}
 
 			im_r := bytes.NewReader(im_data)
-			
+
 			im, _, err := image.Decode(im_r)
 
 			if err != nil {
