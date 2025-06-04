@@ -46,7 +46,7 @@ type ExtractOptions struct {
 	PaletteURIs  []string
 	Root         string
 	Images       []string
-	AllowRemote bool
+	AllowRemote  bool
 }
 
 func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
@@ -176,7 +176,7 @@ func Extract(ctx context.Context, opts *ExtractOptions) ([]*Image, error) {
 			if !opts.AllowRemote {
 				return nil, fmt.Errorf("Remote images not allowed")
 			}
-			
+
 			fname := filepath.Base(path)
 
 			rsp, err := http.Get(path)
