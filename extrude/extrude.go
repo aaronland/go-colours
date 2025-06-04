@@ -246,4 +246,3 @@ func Extrude(ctx context.Context, opts *ExtrudeOptions) (*ExtrudeResponse, error
 
 	return rsp, nil
 }
-
