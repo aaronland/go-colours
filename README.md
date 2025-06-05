@@ -277,7 +277,7 @@ $> fileserver -root www
 
 Open your web browser to `http://localhost:8080` you'll see something like this:
 
-![](docs/images/go-colours-wasm-image.png)
+![](docs/images/go-colours-wasm-launch.png)
 
 You can extract (extrude) colours from a single image on disk. For example:
 
