@@ -12,24 +12,32 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css" />
     </head>
     <body>
-	<nav class="navbar">
-	    <div class="container-fluid">
-	    </div>
-	</nav>
-	<div class="row">
-	    <div class="container">
-		<div id="image-wrapper"></div>
-		<form class="form">
-		    <div class="mb-3">
-			<label for="upload" class="form-label">Image</label>
-			<input type="file" class="form-control" id="upload" placeholder="" disabled>
-			<button type="submit" id="submit" class="btn btn-primary" disabled>Load image</button>
+	<div class="container">
+	    <div class="row grid">
+		<div id="media-sources" style="border:1px solid red;">
+		    
+		    <div id="video-source" style="border:solid thin;">
+			<video id="video"></video>
+			<button type="submit" id="start-video" class="btn btn-primary" disabled>Start video</button>
+			<button type="submit" id="stop-video" class="btn btn-primary" disabled>Stop video</button>					
 		    </div>
-
-		</form>
+		    
+		    <div id="image-source" style="border:solid thin;">
+			<div id="image-wrapper"></div>
+			<form class="form">
+			    <div class="mb-3">
+				<label for="upload" class="form-label">Image</label>
+				<input type="file" class="form-control" id="upload" placeholder="" disabled>
+				<button type="submit" id="image-button" class="btn btn-primary" disabled>Load image</button>
+			    </div>
+			</form>
+		    </div>
+		    
+		</div>
+		<div id="colours" style="border:1px solid blue;">
+		</div>
 	    </div>
 	</div>
-	
     </body>
     <script src="javascript/sfomuseum.golang.wasm.bundle.js"></script>
     <script src="javascript/index.js"></script>

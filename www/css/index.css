@@ -4,8 +4,22 @@
 
 /* Ids */
 
+#media-sources div {
+	margin-bottom: 2rem;
+}
+
+#video {
+	display:none;
+	max-height:300px;
+}
+
 /* Classes */
 
+.grid {
+	display:grid;
+	grid-template-columns:1fr 1fr;
+	gap: 10px 10px;		
+}
 
 /* Media queries */
 
