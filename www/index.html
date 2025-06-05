@@ -18,18 +18,22 @@
 		<div id="media-sources">
 		    
 		    <div id="video-source">
+			<h3>Extract colours from video feed</h3>
 			<video id="video"></video>
 			<button type="submit" id="start-video" class="btn btn-primary" disabled>Start video</button>
 			<button type="submit" id="stop-video" class="btn btn-primary" disabled>Stop video</button>					
 		    </div>
 		    
 		    <div id="image-source">
+			<h3>Extract colours from image</h3>			
 			<div id="image-wrapper"></div>
 			<form class="form">
 			    <div class="mb-3">
-				<label for="upload" class="form-label">Image</label>
 				<input type="file" class="form-control" id="upload" placeholder="" disabled>
-				<button type="submit" id="image-button" class="btn btn-primary" disabled>Load image</button>
+				<div style="font-size:small; margin-bottom:.5rem;">
+				    Supported file types: <code>image/jpeg</code>, <code>image/png</code>, <code>image/gif</code>, <code>image/webp</code>
+				</div>
+				<button type="submit" id="image-button" class="btn btn-primary" disabled>Extract colours</button>
 			    </div>
 			</form>
 		    </div>
@@ -50,6 +54,8 @@ function derive_colours(im_b64){
 	};
 
 	const str_opts = JSON.stringify(opts);
+
+	// Where im_b64 is a base64-encoded image (NOT a data URI)
 
 	colours_extrude(str_opts, im_b64).then((rsp) => {
 		show_colours(rsp);

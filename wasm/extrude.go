@@ -7,7 +7,10 @@ import (
 	"bytes"
 	"image"
 	_ "image/jpeg"
-	"syscall/js"
+	_ "image/png"
+	_ "image/gif"
+	_ "golang.org/x/image/webp"
+	"syscall/js"	
 	"encoding/json"
 	"encoding/base64"
 	

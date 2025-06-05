@@ -29,6 +29,10 @@ github.com/soniakeys/quant/mean
 ## explicit; go 1.23.0
 golang.org/x/image/draw
 golang.org/x/image/math/f64
+golang.org/x/image/riff
+golang.org/x/image/vp8
+golang.org/x/image/vp8l
+golang.org/x/image/webp
 # golang.org/x/sys v0.1.0
 ## explicit; go 1.17
 golang.org/x/sys/internal/unsafeheader

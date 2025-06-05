@@ -1,6 +1,8 @@
 window.addEventListener("load", function load(event){
 
     var upload_el = document.getElementById("upload");
+    var feedback_el = document.getElementById("feedback");
+    
     var image_btn = document.getElementById("image-button");
     var start_video_btn = document.getElementById("start-video");
     var stop_video_btn = document.getElementById("stop-video");            
@@ -12,7 +14,6 @@ window.addEventListener("load", function load(event){
 
 	var show_colours = function(rsp){
 	    const data = JSON.parse(rsp);
-	    console.log("colours", data);
 
 	    const count = data.length;
 
@@ -27,7 +28,6 @@ window.addEventListener("load", function load(event){
 
 		    const sw = data[i].swatches[k];
 		    const hex = sw.colour.hex.trim("#");
-		    console.log(hex);
 		    
 		    const d = document.createElement("div");
 		    d.setAttribute("class", "swatch");
@@ -52,7 +52,7 @@ window.addEventListener("load", function load(event){
 	    colours_extrude(str_opts, im_b64).then((rsp) => {
 		show_colours(rsp);
 	    }).catch((err) => {
-		console.log("SAD", err);
+		feedback_el.innerText = "Failed to show colours, " + err;
 	    });
 	};
 
@@ -89,7 +89,7 @@ window.addEventListener("load", function load(event){
 	var process_upload = function(){
 
 	    if (! upload_el.files.length){
-		console.error("No files");
+		feedback_el.innerText = "There are no files to process";
 		return;
 	    }
 	    
@@ -97,6 +97,18 @@ window.addEventListener("load", function load(event){
 	    
 	    if (! file.type.startsWith('image/')){
 		return false;
+	    }
+
+	    switch (file.type) {
+		case "image/jpeg":
+		case "image/png":
+		case "image/gif":
+		case "image/webp":
+		    // pass
+		    break;
+		default:
+		    feedback_el.innerText = "Unsupported file type: " + file.type;
+		    return;
 	    }
 	    
             const reader = new FileReader();
@@ -118,7 +130,8 @@ window.addEventListener("load", function load(event){
 
 		reader.onload = function(e) {
 		    const im_b64 = e.target.result;
-		    derive_colours(im_b64.replace("data:image/jpeg;base64,", ""));
+		    const prefix = "data:" + file.type + ";base64,";
+		    derive_colours(im_b64.replace(prefix, ""));
 		};
 
 		reader.readAsDataURL(file);
@@ -126,9 +139,15 @@ window.addEventListener("load", function load(event){
 	    }, 10)
 	    
 	};
+
+	upload_el.onchange = function(){
+	    colours.innerHTML = "";
+	};
 	
 	image_btn.onclick = function(){
 
+	    feedback_el.innerHTML = "";
+	    
 	    try {
 		process_upload();
 	    } catch(err) {
@@ -140,6 +159,8 @@ window.addEventListener("load", function load(event){
 
 	start_video_btn.onclick = function(){
 
+	    feedback_el.innerHTML = "";
+	    
 	    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
 
 		stop_video_btn.onclick = function(){
@@ -163,7 +184,7 @@ window.addEventListener("load", function load(event){
 		process_video(stream);
 		
 	    }).catch((err) => {
-		console.error(err);
+		feedback_el.innerText = "Failed to start video feed, " + err;
 	    });
 	};
 	
@@ -172,9 +193,8 @@ window.addEventListener("load", function load(event){
 	start_video_btn.removeAttribute("disabled");	
 	
     }).catch((err) => {
-	alert("Failed to load age WebAssembly functions");
-	console.error("Failed to load WASMbinary", err);
-        return;
+	feedback_el.innerText = "Failed to load age WebAssembly functions, " + err;
+        return false;
     });
 	
 });
