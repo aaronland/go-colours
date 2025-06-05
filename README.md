@@ -277,15 +277,15 @@ $> fileserver -root www
 
 Open your web browser to `http://localhost:8080` you'll see something like this:
 
-![](images/go-colours-wasm-image.png)
+![](docs/images/go-colours-wasm-image.png)
 
 You can extract (extrude) colours from a single image on disk. For example:
 
-![](images/go-colours-wasm-image.png)
+![](docs/images/go-colours-wasm-image.png)
 
 Or extract (extrude) colours, in real-time, from a video feed. For example:
 
-![](images/go-colours-wasm-video.png)
+![](docs/images/go-colours-wasm-video.png)
 
 Under the hood, this is an abbreviated version of what's going on:
 
