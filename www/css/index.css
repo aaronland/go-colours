@@ -2,7 +2,19 @@
 
 /* Elements */
 
+body {
+	margin:1rem;
+}
+
 /* Ids */
+
+#example {
+	border: solid thin;
+	padding: 1rem;
+	font-family:monospace;
+	font-size:.9rem;
+	font-weight:500;
+}
 
 #media-sources div {
 	margin-bottom: 2rem;
@@ -19,6 +31,15 @@
 	display:grid;
 	grid-template-columns:1fr 1fr;
 	gap: 10px 10px;		
+}
+
+#media-sources, #colours {
+	border: solid thin;
+	padding: 1rem;
+}
+
+.row {
+	margin-bottom: 1rem;
 }
 
 .swatch {
