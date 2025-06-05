@@ -16,19 +16,25 @@ window.addEventListener("load", function load(event){
 
 	    const count = data.length;
 
+	    colours.innerHTML = "";
+	    
 	    for (var i=0; i < count; i++){
 
-		// const ext = data[i];
-
-		const swatches = data.swatches;
-		const count_swathces = swatches.length;
+		const swatches = data[i].swatches;
+		const count_swatches = swatches.length;
 		
 		for (var k=0; k < count_swatches; k++){
 
-		    const sw = swatches[k];
+		    const sw = data[i].swatches[k];
 		    const hex = sw.colour.hex.trim("#");
-		    
 		    console.log(hex);
+		    
+		    const d = document.createElement("div");
+		    d.setAttribute("class", "swatch");
+		    d.setAttribute("style", "background-color:" + hex);
+		    d.appendChild(document.createTextNode(" "));
+
+		    colours.appendChild(d);
 		}
 	    }
 	};
@@ -82,6 +88,11 @@ window.addEventListener("load", function load(event){
 	
 	var process_upload = function(){
 
+	    if (! upload_el.files.length){
+		console.error("No files");
+		return;
+	    }
+	    
 	    const file = upload_el.files[0];
 	    
 	    if (! file.type.startsWith('image/')){
@@ -134,7 +145,8 @@ window.addEventListener("load", function load(event){
 		stop_video_btn.onclick = function(){
 
 		    video.pause();
-
+		    video.srcObject = null;
+		    
 		    stream.getTracks().forEach((track) => {
 			if (track.readyState == 'live') {
 			    track.stop();
@@ -142,6 +154,7 @@ window.addEventListener("load", function load(event){
 		    });
 
 		    stop_video_btn.setAttribute("disabled", "disabled");
+		    start_video_btn.removeAttribute("disabled");		    
 		};
 
 		start_video_btn.setAttribute("disabled", "disabled");		
