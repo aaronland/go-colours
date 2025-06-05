@@ -1,0 +1,71 @@
+<html>
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />	
+	<meta name="referrer" content="origin"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="HandheldFriendly" content="true"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+	<title>extrude wasm</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.5.3.6.min.css" />	
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+    </head>
+    <body>
+	<div class="container">
+	    <div class="row" id="feedback"></div>
+	    <div class="row grid">
+		<div id="media-sources">
+		    
+		    <div id="video-source">
+			<h3>Extract colours from video feed</h3>
+			<video id="video"></video>
+			<button type="submit" id="start-video" class="btn btn-primary" disabled>Start video</button>
+			<button type="submit" id="stop-video" class="btn btn-primary" disabled>Stop video</button>					
+		    </div>
+		    
+		    <div id="image-source">
+			<h3>Extract colours from image</h3>			
+			<div id="image-wrapper"></div>
+			<form class="form">
+			    <div class="mb-3">
+				<input type="file" class="form-control" id="upload" placeholder="" disabled>
+				<div style="font-size:small; margin-bottom:.5rem;">
+				    Supported file types: <code>image/jpeg</code>, <code>image/png</code>, <code>image/gif</code>, <code>image/webp</code>
+				</div>
+				<button type="submit" id="image-button" class="btn btn-primary" disabled>Extract colours</button>
+			    </div>
+			</form>
+		    </div>
+		    
+		</div>
+		<div id="colours">
+		</div>
+	    </div>
+	    <div class="row">
+		<p>This is a simple web application to test the <code>extrude.wasm</code> WebAssembly binary to extract (extrude) colours from a static image or a video feed. For detailed usage consult <a href="javascript/index.js">javascript/index.js</a> but the abbreviated version is:</p>
+		<pre id="example">
+function derive_colours(im_b64){
+
+	const opts = {
+		"grid": "euclidian://",
+		"palettes": [ "crayola://" ],
+		"extruders": [ "marekm4://" ],
+	};
+
+	const str_opts = JSON.stringify(opts);
+
+	// Where im_b64 is a base64-encoded image (NOT a data URI)
+
+	colours_extrude(str_opts, im_b64).then((rsp) => {
+		show_colours(rsp);
+	}).catch((err) => {
+		console.log("SAD", err);
+	});
+}</pre>
+	    </div>	    
+	</div>
+    </body>
+    <script src="javascript/sfomuseum.golang.wasm.bundle.js"></script>
+    <script src="javascript/index.js"></script>
+</html>
