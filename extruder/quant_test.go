@@ -16,13 +16,18 @@ func TestNewQuantColour(t *testing.T) {
 		t.Fatalf("Failed to create new quant colour, %v", err)
 	}
 
-	if c.Name() != QUANT {
-		t.Fatalf("Invalid ref for quant colour, %s", c.Name())
+	if c.Reference() != QUANT {
+		t.Fatalf("Invalid ref for quant colour, %s", c.Reference())
 	}
 
 	if c.Hex() != hex {
 		t.Fatalf("Invalid hex, %s (expected %s)", c.Hex(), hex)
 	}
+
+	if c.Name() != hex {
+		t.Fatalf("Invalid name, %s (expected %s)", c.Name(), hex)
+	}
+
 }
 
 func TestQuantExtruder(t *testing.T) {

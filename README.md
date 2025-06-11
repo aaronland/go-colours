@@ -103,9 +103,9 @@ $> ./bin/extrude  https://static.sfomuseum.org/media/176/270/453/3/1762704533_jn
         "swatches": [
           {
             "colour": {
-              "name": "marekm4",
+              "name": "b6baa1",
               "hex": "#b6baa1",
-              "reference": "b6baa1"
+              "reference": "marekm4"
             },
             "closest": [
               {
@@ -136,10 +136,11 @@ $> ./bin/extrude  https://static.sfomuseum.org/media/176/270/453/3/1762704533_jn
           },
           {
             "colour": {
-              "name": "marekm4",
+              "name": "728c9a",
               "hex": "#728c9a",
-              "reference": "728c9a"
+              "reference": "marekm4"
             },
+            "closest": [
 	    ...and so on
 ```
 
