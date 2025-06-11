@@ -30,8 +30,8 @@ func NewMarekm4Colour(ctx context.Context, str_hex string) (colours.Colour, erro
 
 	q := url.Values{}
 	q.Set("hex", str_hex)
-	q.Set("name", MAREKM4)
-	q.Set("ref", str_hex)
+	q.Set("name", str_hex)
+	q.Set("ref", MAREKM4)
 
 	u.RawQuery = q.Encode()
 

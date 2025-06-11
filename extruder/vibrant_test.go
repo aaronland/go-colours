@@ -17,13 +17,18 @@ func TestNewVibrantColour(t *testing.T) {
 		t.Fatalf("Failed to create new vibrant colour, %v", err)
 	}
 
-	if c.Name() != VIBRANT {
-		t.Fatalf("Invalid ref for vibrant colour, %s", c.Name())
+	if c.Reference() != VIBRANT {
+		t.Fatalf("Invalid ref for vibrant colour, %s", c.Reference())
 	}
 
 	if c.Hex() != hex {
 		t.Fatalf("Invalid hex, %s (expected %s)", c.Hex(), hex)
 	}
+
+	if c.Name() != hex {
+		t.Fatalf("Invalid name, %s (expected %s)", c.Name(), hex)
+	}
+
 }
 
 func TestVibrantExtruder(t *testing.T) {
