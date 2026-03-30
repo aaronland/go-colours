@@ -1,6 +1,6 @@
 module github.com/aaronland/go-colours
 
-go 1.24.2
+go 1.25.0
 
 require (
 	github.com/RobCherry/vibrant v0.0.0-20250501174501-d90de4256706
@@ -10,7 +10,7 @@ require (
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-www-show v1.0.0
 	github.com/soniakeys/quant v1.0.0
-	golang.org/x/image v0.28.0
+	golang.org/x/image v0.38.0
 )
 
 require (
