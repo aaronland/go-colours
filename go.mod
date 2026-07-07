@@ -10,7 +10,7 @@ require (
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/sfomuseum/go-www-show v1.0.0
 	github.com/soniakeys/quant v1.0.0
-	golang.org/x/image v0.38.0
+	golang.org/x/image v0.41.0
 )
 
 require (
